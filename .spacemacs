@@ -107,12 +107,8 @@ values."
    dotspacemacs-themes '(brin
                          spacemacs-dark
                          solarized-dark
-                         sublime
-                         molokai
-                         heroku
-                         gotham
-                         twilight
-                         spacegray)
+                         monokai
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -258,7 +254,10 @@ layers configuration. You are free to put any user code."
 
   ;; Enable global linum-mode
   (global-linum-mode)
-
+  ;; Enable auto-complete
+  (ac-config-default)
+  (auto-complete-mode t)
+  ;;(real-global-auto-complete-mode t)
   ;; Keybindings file
   (when (file-readable-p "~/git/dotfiles/.keybindings.el")
     (load-file "~/git/dotfiles/.keybindings.el"))
@@ -272,7 +271,7 @@ layers configuration. You are free to put any user code."
   ;; Disable autosave
   (setq auto-save-default nil)
   ;; Matching Parens
-  (setq show-paren-delay 0) ;; make highlight instant
+  (setq show-paren-delay -10) ;; make highlight instant
   (set-face-attribute 'show-paren-match nil :weight 'extra-bold) ;; make highlight extra bold
   (set-face-foreground 'show-paren-match "#f00") ;; set highlight color to red
   (set-face-background 'show-paren-match (face-background 'default)) ;; Disable face background to default colors
