@@ -25,24 +25,36 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     c-c++
+     colors
+     dash
+     deft
      django
+     eyebrowse
      emacs-lisp
      emoji
+     floobits
+     ;;go
      git
+     github
      html
      javascript
      markdown
      org
      osx
+     php
      ruby
      ruby-on-rails
      spotify
      swift
      (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom)
+            shell-default-term-shell "/bin/zsh"
+            shell-default-shell 'multi-term
+            shell-default-height 30
+            shell-default-position 'bottom)
       spell-checking
       syntax-checking
+      yaml
       version-control
      )
    ;; List of additional packages that will be installed without being
