@@ -275,7 +275,6 @@ layers configuration. You are free to put any user code."
     (load-file "~/git/dotfiles/.keybindings.el"))
 
   ;; Other Settings ;;
-
   ;; Set HL color
   (set-face-background 'hl-line "#252A30")
   ;; Keep syntax highlighting in current line
