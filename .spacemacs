@@ -264,17 +264,18 @@ in `dotspacemacs/user-config'."
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
+  ;; ::Essential settings ::
   ;; Enable global linum-mode
   (global-linum-mode)
   ;; Enable auto-complete
   (ac-config-default)
   (auto-complete-mode t)
-  ;;(real-global-auto-complete-mode t)
   ;; Keybindings file
   (when (file-readable-p "~/git/dotfiles/.keybindings.el")
     (load-file "~/git/dotfiles/.keybindings.el"))
 
-  ;; Other Settings ;;
+  ;; ::Other Settings::
+
   ;; Set HL color
   (set-face-background 'hl-line "#252A30")
   ;; Keep syntax highlighting in current line
