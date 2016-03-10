@@ -33,35 +33,70 @@ values."
      eyebrowse
      emacs-lisp
      emoji
+     evil-commentary
      floobits
-     ;;go
+     games
      git
      github
+     haskell
      html
      javascript
+     lua
      markdown
      org
      osx
      php
+     python
      ruby
      ruby-on-rails
-     spotify
-     swift
      (shell :variables
             shell-default-term-shell "/bin/zsh"
             shell-default-shell 'multi-term
             shell-default-height 30
             shell-default-position 'bottom)
-      spell-checking
-      syntax-checking
-      yaml
-      version-control
+     shell-scripts
+     spell-checking
+     spotify
+     syntax-checking
+     swift
+     themes-megapack
+     version-control
+     windows-scripts
+     yaml
+     ;; end config
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(ace-jump-mode
+                                      chess
+                                      drag-stuff
+                                      dropbox
+                                      evil-rails
+                                      hlinum
+                                      multiple-cursors
+                                      org-caldav
+                                      org-cliplink
+                                      org-dashboard
+                                      org-dotemacs
+                                      org-jekyll
+                                      org-journal
+                                      org-mac-iCal
+                                      org-octopress
+                                      org-pdfview
+                                      org-trello
+                                      origami
+                                      octopress
+                                      osx-dictionary
+                                      paredit
+                                      smart-tabs-mode
+                                      ssh
+                                      sunshine
+                                      thesaurus
+                                      ztree
+                                      ;; end config
+                                      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -103,11 +138,11 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner nil
+   dotspacemacs-startup-banner 'official
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'.
    ;; (default '(recents projects))
-   dotspacemacs-startup-lists '(recents projects)
+   dotspacemacs-startup-lists 'nil ;;(recents projects)
    ;; Number of recent files to show in the startup buffer. Ignored if
    ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
    dotspacemacs-startup-recent-list-size 5
@@ -116,17 +151,18 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(brin
-                         spacemacs-dark
+   dotspacemacs-themes '(spolsky
+                         brin
                          solarized-dark
-                         monokai
+                         ;;end config
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 16
+   dotspacemacs-default-font '("Hack"
+                               :size 14
+                               ;;:size 13
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -200,14 +236,14 @@ values."
    dotspacemacs-loading-progress-bar t
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil 
+   dotspacemacs-fullscreen-at-startup nil
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -217,7 +253,7 @@ values."
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols nil
+   dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen. (default t)
@@ -249,7 +285,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'trailing
    ))
 
 (defun dotspacemacs/user-init ()
@@ -263,34 +299,109 @@ in `dotspacemacs/user-config'."
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+  ;; begin config
 
-  ;; ::Essential settings ::
-  ;; Enable global linum-mode
-  (global-linum-mode)
-  ;; Enable auto-complete
-  (ac-config-default)
-  (auto-complete-mode t)
   ;; Keybindings file
-  (when (file-readable-p "~/git/dotfiles/.keybindings.el")
-    (load-file "~/git/dotfiles/.keybindings.el"))
+  (load-file "~/git/dotfiles/.keybindings.el")
+  ;; Set Powerline seperator
+  (setq powerline-default-separator 'slant)
 
-  ;; ::Other Settings::
+;; =============================================================== ;;
 
-  ;; Set HL color
-  (set-face-background 'hl-line "#252A30")
-  ;; Keep syntax highlighting in current line
-  (set-face-foreground 'highlight nil)
+  ;; enable multiple-cursors
+  (global-evil-mc-mode 1)
+  (require 'multiple-cursors)
+  ;; activate hlinum
+  (hlinum-activate)
+  ;; collapse fringes
+  (fringe-mode 1)
+  ;; Show line numbers dynamically with spaces on either side
+  (global-linum-mode 1)
+  (defadvice linum-update-window (around linum-dynamic activate)
+    (let* ((w (length (number-to-string
+                       (count-lines (point-min) (point-max)))))
+           (linum-format (concat " %" (number-to-string w) "d ")))
+      ad-do-it))
   ;; Disable autosave
   (setq auto-save-default nil)
   ;; Matching Parens
+  (show-paren-mode 1)
   (setq show-paren-delay -10) ;; make highlight instant
   (set-face-attribute 'show-paren-match nil :weight 'extra-bold) ;; make highlight extra bold
   (set-face-foreground 'show-paren-match "#f00") ;; set highlight color to red
   (set-face-background 'show-paren-match (face-background 'default)) ;; Disable face background to default colors
-  ;; Multiple Cursors enable
-  (global-evil-mc-mode  1) ;; enable
+  ;; shell
+  ;;(setq explicit-shell-file-name "c:/msys64/usr/bin/mintty.exe")
+  ;;(setq shell-file-name "bash")
+  ;;(setenv "SHELL" shell-file-name)
+  ;; Whitespace-mode
+  (setq whitespace-style '(trailing space tab-mark line indention column hspace tab))
+  (autoload 'whitespace-toggle-options "whitespace" "Toggle local `whitespace-mode' options." t)
+  ;; Autocomplete
+  (require 'auto-complete)
+  (global-auto-complete-mode t)
+  ;; Visable bell
+  (setq visible-bell t)
+  ;; drag stuff enable
+  (drag-stuff-global-mode 1)
+  ;;===================================== org =================================================;;
 
-)
+  ;; org-todo-keywords
+  (setq org-todo-keywords
+        '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . "violet")
+          ("IN-PROGRESS" . "yellow")
+          ("WAITING" . "orange")
+          ("|" . "aqua")
+          ("CANCELED" . "red")
+          ("DONE" . "green")
+          ))
+  ;; set path for agenda files
+  (setq org-agenda-files '("h:/org/"))
+  ;; open agenda in current frame
+  (defun air-pop-to-org-agenda (split)
+    "Visit the org agenda, in the current window or a SPLIT."
+    (interactive "P")
+    (org-agenda-list)
+    (when(not split)
+      (delete-other-windows)))
+  ;; capture template
+  (setq org-capture-templates
+        '(("a" "My TODO task format." entry
+           (file "todo.org")
+           "* TODO %?
+SCHEDULED: %t")))
+  ;; set capture once
+  (defun air-org-task-capture ()
+    "Capture a task with my default template."
+    (interactive)
+    (org-capture nil "a"))
+  ;;=============== AGENDA TWEAKS ===================;;
+  ;; include archives when searching
+  (setq org-agenda-text-search-extra-files '(agenda-archives))
+  ;; leave blank line at the end the content of each task
+  (setq org-blank-before-new-entry (quote ((heading) (plain-list-item))))
+  ;; Mark all child task 'Done' before marking parent as Done
+  (setq org-enforce-todo-dependencies t)
+  ;; Know when tasks has changed status
+  (setq org-log-done (quote time))
+  ;; Insert annotation when I change deadline on tasks
+  (setq org-log-redeadline (quote time))
+  ;; Insert annotion when I reschedule
+  (setq org-log-reschedule (quote time))
+  ;; =============== ASPELL ================;;
+  ;;(add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
+  ;; where the custom dictionary is
+  (setq ispell-program-name "aspell")
+  ;;(setq ispell-personal-dictionary "C:/")
+
+  ;; Disable exe-path-from-shell message
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize)
+
+  ;; end config
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
