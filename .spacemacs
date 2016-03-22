@@ -71,11 +71,13 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ace-jump-mode
                                       chess
+                                      darktooth
                                       drag-stuff
                                       dropbox
                                       evil-rails
                                       hlinum
                                       multiple-cursors
+                                      nyan-mode
                                       org-caldav
                                       org-cliplink
                                       org-dashboard
@@ -93,6 +95,7 @@ values."
                                       smart-tabs-mode
                                       ssh
                                       sunshine
+                                      swiper
                                       thesaurus
                                       ztree
                                       ;; end config
@@ -161,7 +164,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Hack"
-                               :size 16
+                               :size 20
                                ;;:size 13
                                :weight normal
                                :width normal
@@ -199,8 +202,6 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
-   ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
@@ -348,7 +349,8 @@ layers configuration. You are free to put any user code."
   (setq tab-always-indent 'complete)
   ;; save buffers when not in focus.
   ;;(add-hook 'focus-out-hook 'save-buffer)
-
+  ;; nyan-mode
+  ;;(nyan-mode 1)
 
 
 
