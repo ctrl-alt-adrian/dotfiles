@@ -71,7 +71,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ace-jump-mode
                                       chess
-                                      darktooth
+                                      ;;darktooth
                                       drag-stuff
                                       dropbox
                                       evil-rails
@@ -92,6 +92,8 @@ values."
                                       octopress
                                       osx-dictionary
                                       paredit
+                                      rainbow-mode
+                                      shell-switcher
                                       smart-tabs-mode
                                       ssh
                                       sunshine
@@ -154,7 +156,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spolsky
+   dotspacemacs-themes '(darktooth
+                         spolsky
                          brin
                          solarized-dark
                          ;;end config
