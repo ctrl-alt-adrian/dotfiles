@@ -71,7 +71,6 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(ace-jump-mode
                                       chess
-                                      ;;darktooth
                                       drag-stuff
                                       dropbox
                                       evil-rails
