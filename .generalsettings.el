@@ -5,7 +5,9 @@
  ;; enable multiple-cursors
  (global-evil-mc-mode 1)
  (require 'multiple-cursors)
-
+ ;; enable Evil-Vimish-Fold
+ (require 'evil-vimish-fold)
+ (evil-vimish-fold-mode 1)
  ;; collapse fringes
  (fringe-mode 1)
  ;; Show line numbers dynamically with spaces on either side
