@@ -14,3 +14,5 @@
 (define-key global-map (kbd "C-c t a") 'air-pop-to-org-agenda)
 ;; call "org-capture"
 (define-key global-map (kbd "C-c c") 'air-org-task-capture)
+;; ========== vimish fold ============;;
+;;(global-set-key (kbd "z-g") 'vimish-fold-toggle)
