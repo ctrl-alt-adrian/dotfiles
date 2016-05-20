@@ -60,14 +60,16 @@ values."
    dotspacemacs-additional-packages '(ace-jump-mode
                                       atom-dark-theme
                                       atom-one-dark-theme
-                                      base16-theme
                                       bash-completion
                                       basic-theme
                                       drag-stuff
                                       dropbox
                                       evil-rails
+                                      evil-vimish-fold
+                                      fold-this
                                       hlinum
                                       hyde
+                                      interleave
                                       multiple-cursors
                                       org-caldav
                                       org-cliplink
@@ -90,6 +92,7 @@ values."
                                       sunshine
                                       swiper
                                       thesaurus
+                                      vimish-fold
                                       ztree
                                       ;;>>> end config <<<;;
                                       )
@@ -149,6 +152,7 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(atom-one-dark
                          monokai
+                         darkokai
                          ;;>>> end config <<<;;
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -158,7 +162,7 @@ values."
    dotspacemacs-default-font '("Fira Mono"
                                :size 14.5
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
