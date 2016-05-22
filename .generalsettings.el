@@ -37,3 +37,15 @@
  (drag-stuff-global-mode 1)
  ;; use tab to indent or complete
  (setq tab-always-indent 'complete)
+
+;;>>>>>>>>>>><<<<<<<<<<<<<;;
+
+
+;; UTF-8 EVERYWHERE!
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))

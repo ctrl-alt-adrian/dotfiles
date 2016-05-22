@@ -32,6 +32,11 @@ SCHEDULED: %t")))
   (interactive)
   (org-capture nil "a"))
 
+;; Add fancy TODO states
+(setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+                          (sequence "⚑ WAITING(w)" "|")
+                          (sequence "|" "✘ CANCELED(c)")))
+
 ;; >>>>>>> Agenda Tweaks <<<<<<< ;;
 
 ;; include archives when searching
