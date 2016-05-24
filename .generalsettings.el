@@ -21,10 +21,11 @@
  ;; disable auto-save
  (setq auto-save-default nil)
  ;; matching Parens
- (show-paren-mode 1)
- (setq show-paren-delay -10) ;; make highlight instant
- (set-face-background 'show-paren-match (face-background 'default)) ;; disable face background to default colors
-
+(show-paren-mode 1)
+(setq show-paren-delay -10) ;; make highlight instant
+(set-face-attribute 'show-paren-match nil :weight 'extra-bold) ;; make highlight extra bold
+(set-face-foreground 'show-paren-match "#f00") ;; set highlight color to red
+(set-face-background 'show-paren-match (face-background 'default)) ;; Disable face background to default colors
  ;; whitespace-mode
  (setq whitespace-style '(trailing space tab-mark line indention column hspace tab))
  (autoload 'whitespace-toggle-options "whitespace" "Toggle local 'whitespace-mode' options." t)
@@ -37,9 +38,15 @@
  (drag-stuff-global-mode 1)
  ;; use tab to indent or complete
  (setq tab-always-indent 'complete)
+;; fullscreen mode
+(defun fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen
+                       (if (frame-parameter nil 'fullscreen) nil 'fullboth)))
+;; ^^ f9 is the hotkey to toggle fullscreen per the .keybindings file
+
 
 ;;>>>>>>>>>>><<<<<<<<<<<<<;;
-
 
 ;; UTF-8 EVERYWHERE!
 (setq locale-coding-system 'utf-8)

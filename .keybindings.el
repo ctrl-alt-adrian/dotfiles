@@ -16,3 +16,5 @@
 (define-key global-map (kbd "C-c c") 'air-org-task-capture)
 ;; ========== vimish fold ============;;
 ;;(global-set-key (kbd "z-g") 'vimish-fold-toggle)
+;; ========== fullscreen toggle ==========;;
+(global-set-key [f9] 'fullscreen)
