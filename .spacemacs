@@ -67,6 +67,7 @@ values."
                                       evil-rails
                                       evil-vimish-fold
                                       fold-this
+                                      helm-itunes
                                       hlinum
                                       hyde
                                       interleave
@@ -159,8 +160,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Fira Mono"
-                               :size 14.5
+   dotspacemacs-default-font '("Operator Mono"
+                               :size 16.5
                                :width normal
                                :powerline-scale 1.2)
    ;; The leader key
@@ -240,7 +241,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
