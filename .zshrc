@@ -5,8 +5,7 @@ export ZSH=/Users/athomas/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="xiong-chiamiov-plus"
-#ZSH_THEME="agnoster"
+ZSH_THEME="avit"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -54,7 +53,7 @@ plugins=(git)
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/athomas/cdpr7/_cdp/_cdprogs"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -83,14 +82,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-#set username 
-export DEFAULT_USER="athomas"
-
-# Enable "The Fuck"
-eval "$(thefuck --alias)"
-export PATH="/usr/local/sbin:$PATH"
-# Xterm 256 Colors
-export TERM=xterm-256color
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
