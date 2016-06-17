@@ -45,7 +45,7 @@
                        (if (frame-parameter nil 'fullscreen) nil 'fullboth)))
 ;; ^^ f9 is the hotkey to toggle fullscreen per the .keybindings file
 ;; change font style when comments are toggled
-(setq font-lock-comment-face "Operator Mono Medium Italic")
+;;(setq font-lock-comment-face "Operator Mono Medium Italic")
 
 ;;>>>>>>>>>>><<<<<<<<<<<<<;;
 
