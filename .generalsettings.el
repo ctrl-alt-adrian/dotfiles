@@ -38,14 +38,14 @@
  (drag-stuff-global-mode 1)
  ;; use tab to indent or complete
  (setq tab-always-indent 'complete)
-;; fullscreen mode
+;; fullscreen mode <f9> is the hotkey per ".keybindings"
 (defun fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen
                        (if (frame-parameter nil 'fullscreen) nil 'fullboth)))
-;; ^^ f9 is the hotkey to toggle fullscreen per the .keybindings file
-;; change font style when comments are toggled
-;;(setq font-lock-comment-face "Operator Mono Medium Italic")
+;; change font style to italic when comments are toggled
+(set-face-italic 'font-lock-comment-face t)
+
 
 ;;>>>>>>>>>>><<<<<<<<<<<<<;;
 
