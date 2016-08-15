@@ -57,3 +57,10 @@
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+;; start flycheck
+(global-flycheck-mode)
+;; Disable Shell Check Startup
+(setq exec-path-from-shell-check-startup-files nil)
+
+;; end config
