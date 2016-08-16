@@ -1,4 +1,4 @@
-set shell=/bin/bash " because vundle trips when install plugins in zsh"
+"set shell=/bin/bash " because vundle trips when install plugins in zsh"
 " Vundle
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -12,7 +12,8 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
@@ -39,7 +40,7 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'sickill/vim-pasta'
 Plugin 'tomtom/tcomment_vim'
 Plugin 'rking/ag.vim'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'vim-ruby/vim-ruby'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -50,6 +51,8 @@ filetype plugin indent on    " required
 " Pathogen
 execute pathogen#infect()
 "========================"
+" Y U No SSL?"
+let $GIT_SSL_NO_VERIFY = 'true'
 
 " GENERAL
 
@@ -78,6 +81,7 @@ set nobackup  " Turn off backup
 set nowb
 set noswapfile
 set cursorline  " hilight the line the cursor is on
+set guifont=Hack:h16
 " UX "
 " code folding settings
 set foldmethod=syntax " fold based on indent
@@ -118,6 +122,11 @@ inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 inoremap <Left> <Nop>
 inoremap <Right> <Nop>
+" Help searches navigation
+nmap <silent>  <RIGHT>         :cnext<CR>
+nmap <silent>  <RIGHT><RIGHT>  :cnfile<CR><C-G>
+nmap <silent>  <LEFT>          :cprev<CR>
+nmap <silent>  <LEFT><LEFT>    :cpfile<CR><C-G>
 " Plugin settings "
 " close NERDTree after a file is opened
 let g:NERDTreeQuitOnOpen=0
