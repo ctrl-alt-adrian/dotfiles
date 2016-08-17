@@ -21,6 +21,13 @@ Plugin 'ascenator/L9', {'name': 'newL9'}
 Plugin 'pangloss/vim-javascript'
 " Hard Mode
 Plugin 'wikitopian/hardmode'
+" Vim Airline & Airline Themes
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+" Vim Hardtime
+Plugin 'takac/vim-hardtime'
+" NerdTree
+Plugin 'scrooloose/nerdtree'
 " end config
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -179,3 +186,13 @@ let g:cssColorVimDoNotMessMyUpdatetime = 1
 " autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 " autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 " autocmd FileType c set omnifunc=ccomplete#Complete
+"  -- Vim Hardtime --
+" hardtime enabled in all buffers
+let g:hardtime_default_on = 1
+" increase timeout time to 2000 ms
+let g:hardtime_timeout = 2000
+" enable notification that Hardtime is enabled
+let g:hardtime_showmsg = 1
+" allow different keys
+" let g:hardtime_allow_different_key = 1
+
