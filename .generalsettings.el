@@ -62,5 +62,7 @@
 (global-flycheck-mode)
 ;; Disable Shell Check Startup
 (setq exec-path-from-shell-check-startup-files nil)
-
+;; enable global surround
+(global-evil-surround-mode t)
+(global-evil-mc-mode t)
 ;; end config
