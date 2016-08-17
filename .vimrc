@@ -1,5 +1,3 @@
-"set shell=/bin/bash " because vundle trips when install plugins in zsh"
-" Vundle
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -11,48 +9,40 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'kien/ctrlp.vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'mattn/emmet-vim'
-Plugin 'othree/html5.vim'
-Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/nerdtree'
-Plugin 'ervandew/supertab'
-Plugin 'godlygeek/tabular'
-Plugin 'tpope/vim-commentary'
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'fisadev/vim-ctrlp-cmdpalette'
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+Plugin 'ascenator/L9', {'name': 'newL9'}
+" Javascript IDE
 Plugin 'pangloss/vim-javascript'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-rails'
-Plugin 'ap/vim-css-color'
-Plugin 'tpope/vim-surround'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'scrooloose/syntastic'
-Plugin 'tmhedberg/matchit'
-Plugin 'alvan/vim-closetag'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'sickill/vim-pasta'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'rking/ag.vim'
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-ruby/vim-ruby'
+" Hard Mode
+Plugin 'wikitopian/hardmode'
+" end config
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-"============================================================="
-" Pathogen
-execute pathogen#infect()
-"========================"
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+"set shell=/bin/bash " because vundle trips when install plugins in zsh"
+
+
+
+
 " Y U No SSL?"
-let $GIT_SSL_NO_VERIFY = 'true'
+"let $GIT_SSL_NO_VERIFY = 'true'
 
 " GENERAL
 
@@ -68,7 +58,7 @@ set encoding=utf8
 let base16colorspace=256 " Access colors present in 256 colorspace"
 set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors"
 set background=dark
-colorscheme kolor
+"colorscheme kolor
 syntax on "switch syntax highliting on
 set list " show whitespace and tabs
 set listchars=eol:¬,tab:··,extends:>,precedes:<,trail:·,
