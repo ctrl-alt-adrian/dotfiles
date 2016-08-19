@@ -5,7 +5,8 @@ export ZSH=/Users/athomas/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="avit"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="gallois"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -53,7 +54,7 @@ plugins=(git)
 
 # User configuration
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+# export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -82,6 +83,41 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
-# Default User
+
+
+# Spaceship config
+# PROMPT
+SPACESHIP_PROMPT_SYMBOL='➔'
+SPACESHIP_PROMPT_ADD_NEWLINE=true
+SPACESHIP_PROMPT_SEPARATE_LINE=true
+
+# GIT
+SPACESHIP_GIT_SHOW=true
+SPACESHIP_GIT_UNCOMMITTED='+'
+SPACESHIP_GIT_UNSTAGED='!'
+SPACESHIP_GIT_UNTRACKED='?'
+SPACESHIP_GIT_STASHED='$'
+SPACESHIP_GIT_UNPULLED='⇣'
+SPACESHIP_GIT_UNPUSHED='⇡'
+
+# Hide Ruby
+SPACESHIP_RUBY_SHOW=false
+
+
+# Nisi configs
+export EDITOR='nvim'
+# alias git to hub
+if hash hub 2>/dev/null; then
+    eval "$(hub alias -s)"
+fi
+
+# source nvm
+export NVM_DIR=~/.nvm
+
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Default Prompt
+# export DEFAULT_USER="my_username" Change "my_username" to your username
 export DEFAULT_USER="athomas"
