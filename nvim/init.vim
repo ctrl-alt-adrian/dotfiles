@@ -1,8 +1,17 @@
 source ~/.config/nvim/plugins.vim
+source ~/.config/nvim/deoplete.vim
+source ~/.config/nvim/language_client.vim
+source ~/.config/nvim/airline.vim
+source ~/.config/nvim/keybindings.vim
+source ~/.config/nvim/abbreviations.vim
 
 " Colors/Theme {{{
+syntax enable
 set background=dark
-colorscheme dracula
+colorscheme material
+let g:material_theme_style = 'default'
+let g:material_terminal_italics=1
+let g:airline_theme='material' " airline theme setting
 " }}}
 
 " Base Configuration {{{
@@ -36,6 +45,10 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 " Set the terminal's title
 set title
 
+" font
+
+" set guifont=Hack:h11
+
 " Global tab width.
 set tabstop=2
 set shiftwidth=2
@@ -46,11 +59,7 @@ set expandtab
 set list listchars=tab:»\ ,trail:·
 
 " Configure spell checking
-nmap <silent> <leader>p :set spell!<CR>
 set spelllang=en_us
-
-" Set leader to comma
-let mapleader = ","
 
 " Send all vim registers to the mac clipboard
 set clipboard=unnamed
@@ -66,10 +75,6 @@ tnoremap <Esc> <C-\><C-n>
 " }}}
 
 " Helper Functions and Mappings {{{
-" Easily manage quick fix windows
-map <silent> <C-n> :cnext<CR>
-map <silent> <C-m> :cprevious<CR>
-nnoremap <silent> <leader>q :cclose<CR>
 
 " Capture current file path into clipboard
 function! CaptureFile()
@@ -109,47 +114,9 @@ set history=1000
 
 " enable 24 bit color support if supported
 if (has('mac') && empty($TMUX) && has("termguicolors"))
-    set termguicolors
+  set termguicolors
 endif
 
-" Fix indentation in file
-map <leader>i mmgg=G`m<CR>
-
-" Toggle highlighting of search results
-nnoremap <leader><space> :nohlsearch<cr>
-
-" Open Buffer explorer
-nnoremap ; :BufExplorer<cr>
-
-" Unsmart Quotes
-nnoremap guq :%s/\v[“”]/"/g<cr>
-" }}}
-
-" language-server {{{
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['/usr/local/lib/node_modules/javascript-typescript-langserver/lib/language-server.stdio.js'],
-    \ }
-
-" Automatically start language servers.
-let g:LanguageClient_autoStart = 1
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-" }}}
-
-" python-support {{{
-" for python completions
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'jedi')
-" language specific completions on markdown file
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'mistune')
-
-" utils, optional
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'psutil')
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'setproctitle')
 " }}}
 
 " neomake {{{
@@ -163,11 +130,11 @@ let g:mix_format_on_save = 1
 " }}}
 
 " emmet-vim {{{
-let g:user_emmet_settings = {
-\  'javascript' : {
-\      'extends' : 'jsx',
-\  },
-\}
+" let g:user_emmet_settings = {
+"       \  'javascript' : {
+"       \      'extends' : 'jsx',
+"       \  },
+"       \}
 " }}}
 
 " vim-markdown {{{
@@ -199,12 +166,6 @@ let g:vim_json_syntax_conceal = 0
 " vim-test {{{
 let test#strategy = "neovim"
 
-" Add hotkeys for vim-test
-nmap <silent> <leader>t :TestFile<CR>
-nmap <silent> <leader>T :TestNearest<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
 " }}}
 
 " vim-polyglot {{{
@@ -289,22 +250,10 @@ if has("autocmd")
 
   " Restore cursor position
   autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 endif
-
- " wipeout buffer
-nmap <silent> <leader>b :bw<cr>
-
-" set paste toggle
-set pastetoggle=<leader>v
-
-" Textmate style indention
-vmap <leader>[ <gv
-vmap <leader>] >gv
-nmap <leader>[ <<
-nmap <leader>] >>
 
 " make comments and HTML attributes italic
 highlight Comment cterm=italic
@@ -312,15 +261,5 @@ highlight htmlArg cterm=italic
 highlight xmlAttrib cterm=italic
 highlight Type cterm=italic
 highlight Normal ctermbg=none
-
-" Abbreviations
-abbr funciton function
-abbr teh the
-abbr tempalte template
-abbr fitler filter
-abbr cosnt const
-abbr attribtue attribute
-abbr attribuet attribute
-
 
 "}}}
