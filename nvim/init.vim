@@ -10,6 +10,7 @@ source ~/.config/nvim/airline.vim
 source ~/.config/nvim/keybindings.vim
 source ~/.config/nvim/abbreviations.vim
 
+
 " general
 " ************************************************
 set nocompatible
@@ -51,6 +52,7 @@ set pastetoggle=<f6>
 set nopaste
 set splitright                                                  " Split vertical windows right to the current windows
 set splitbelow                                                  " Split horizontal windows below to the current windows
+
 " auto: highlight paren match color control
 autocmd BufRead,BufNewFile * syn match parens /[(){}]/ | hi parens ctermfg=blue
 filetype plugin indent on
@@ -135,10 +137,13 @@ highlight xmlAttrib cterm=italic
 highlight Type cterm=italic
 highlight Normal ctermbg=none
 
-" other shizz
+" coding
 " ************************************************
-" enable le mouse
-set mouse=a
+augroup filetype javascript syntax=javascript
+
+" other shizz
+set mouse=a	" enable le mouse
+" ************************************************
 " Load personal snippets
 let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 " vim-closetag/delimitMate conflict resolution/fix
@@ -151,3 +156,10 @@ set completeopt=menu
 set completeopt=preview
 set completeopt-=longest
 set completeopt+=noinsert
+
+let g:deoplete#enable_at_startup = 1		" start deoplete 
+" guyo + limelight integration
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
+" don't run typescript diagnostics by default
+let g:nvim_typescript#diagnosticsEnable = 0
