@@ -1,4 +1,7 @@
 source ~/.config/nvim/plugins.vim
+source ~/.config/nvim/lightline.vim
+source ~/.config/nvim/NERDTree.vim
+source ~/.config/nvim/fzf.vim
 source ~/.config/nvim/emmet.vim
 source ~/.config/nvim/ale.vim
 source ~/.config/nvim/deoplete.vim
@@ -7,147 +10,124 @@ source ~/.config/nvim/airline.vim
 source ~/.config/nvim/keybindings.vim
 source ~/.config/nvim/abbreviations.vim
 
-" Colors/Theme {{{
-syntax enable           "Turn on syntax highlighting
-syntax on               "Turn on syntax highlighting
-set background=dark
-colorscheme solarized8_flat
-" let g:material_theme_style = 'default'
-" let g:material_terminal_italics=1
-" let g:airline_theme='material' " airline theme setting
-let g:solarized_term_italics=1
-let g:solarized_termcolors=256
-let g:airline_theme='solarized' " airline theme setting
-let g:airline_solarized_bg='dark'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled = 1
-" }}}
 
-" Base Configuration {{{
+" general
+" ************************************************
 set nocompatible
-filetype off
-filetype plugin indent on
-set termguicolors
-set ttyfast
 set laststatus=1
-set encoding=utf-8              " Set default encoding to UTF-8
+set encoding=utf-8
 scriptencoding utf-8
-set autoread                    " Automatically reread changed files without asking me anything
-set autoindent
-set smartindent
-set backspace=indent,eol,start  " Makes backspace key more powerful.
-set incsearch                   " Shows the match while typing
-set hlsearch
+set autoread " detect when a file is changed
+set autowrite " automagically save before :next, :make, etc
+set history=1000 " change history to 1000
+set textwidth=120
+set inccommand=nosplit " don't split when subsituting
+set backspace=indent,eol,start " make backspace behave in a sane manner
+autocmd BufLeave,FocusLost * silent! wall " safe file on focus loss
+
+" no swap or backup files
+" ************************************************
+set noswapfile
+set nobackup
+set nowritebackup
+
+" searching
+" ************************************************
+set ignorecase 		" case insensitive searching
+set smartcase 		" case-sensitive if expresson contains a capital letter
+set hlsearch		" highlight search results
+set incsearch		" set incremental search, like modern browsers
+set nolazyredraw	"don't redraw while executing macros
+let g:ackprg = 'ag --nogroup --nocolor --column' " enable ag instead of ack
+set magic 		" set magic on for regex
+
+" error bells
+" ************************************************
+set noerrorbells
+set visualbell
+set t_vb=
+set tm=500
+" }}}
+set clipboard+=unnamedplus
+set pastetoggle=<f6>
+set nopaste
 set splitright                                                  " Split vertical windows right to the current windows
 set splitbelow                                                  " Split horizontal windows below to the current windows
-set autowrite                                                   " Automatically save before :next, :make etc.
-
-set showcmd                                                     " Show command
-set showmatch                                                   " Do not show matching brackets by flickering
-set matchtime=3                                                 " speed up showmatch
-" Basic vim settings
-set hidden
-set visualbell
-set number
-set nobackup
-set noswapfile
-set noshowmode
-
-" Auto: highlight paren match color control
+" auto: highlight paren match color control
 autocmd BufRead,BufNewFile * syn match parens /[(){}]/ | hi parens ctermfg=blue
+filetype plugin indent on
+filetype plugin on
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
-" Set the terminal's title
-set title
-" omni completion
-filetype plugin on
-" Global tab width.
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-
 " Set to show invisibles (tabs & trailing spaces) & their highlight color
 set list listchars=tab:»\ ,trail:·
 
-" Configure spell checking
-set spelllang=en_us
+" apperance
+" ************************************************
+syntax on
+set number		" show line numbers
+"set relativenumber	" show relative line numbers
+set wrap		" turn on line wrapping
+set wrapmargin=8	" wrap lines when coming withing n characters
+set linebreak		" set soft wrapping
+set autoindent		" automagically set indent of new line
+set ttyfast		" faster redrawing
+set diffopt+=vertical
+set laststatus=2 	" show status line at all time
+set so=7 		" set 7 lines to the cursors - when moving vertical
+set wildmenu 		" enhance command line completion
+set hidden 		" current buffer can be put into background
+set showcmd 		" show incomplete commands
+set noshowmode 		" don't show which mode disabled for Powerline
+set wildmode=list:longest " complete files like a shell
+set scrolloff=3 	" lines of text around cursor
+set shell=$SHELL
+set cmdheight=1 	" command bar height
+set title 		" set terminal title
+set showmatch 		" show matching braces
+set mat=2 		" how many tenths of a second to blink
 
-" Send all vim registers to the mac clipboard
-set clipboard=unnamed
+" colorscheme
+" ************************************************
+set termguicolors
+set background=dark
+colo onedark
 
-" Default to magic mode when using substitution
-cnoremap %s/ %s/\v
-cnoremap \>s/ \>s/\v
-" }}}
+" tab control
+" ************************************************
+set noexpandtab 	" insert tabs rather than spaces for <Tab>
+set smarttab 		" tab respects 'tabstop', 'shifwidth', and 'softtabstop'
+set tabstop=4 		" the visible width of tabs
+set softtabstop=4 	" edit as if the tabs are 4 characters wide
+set shiftwidth=4	" number of spaces to use for indent and unindent
+set shiftround 		" round indent to a multiple of 'shiftwidth'
 
-" Terminal Mode Configuration {{{
-" Terminal mode mappings
-tnoremap <Esc> <C-\><C-n>
-" }}}
+" dev icons
+" ************************************************
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+" code folding settings
+" toggle invisible characters
 
-" Helper Functions and Mappings {{{
+" enable 24 bit color if supported
+" ************************************************
+set t_Co=256		" Tell vim that the terminal supports 256 colors
 
-" Capture current file path into clipboard
-function! CaptureFile()
-  let @+ = expand('%')
-endfunction
-map <leader>f :call CaptureFile()<cr>
-
-" Rename current file
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'))
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-map <leader>n :call RenameFile()<cr>
-
-" Strip whitespace on save
-fun! <SID>StripTrailingWhitespaces()
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfun
-
-command -nargs=0 Stripwhitespace :call <SID>StripTrailingWhitespaces()
-
-" change history to 1000
-set history=1000
-
-" enable 24 bit color support if supported
-if (has('mac') && empty($TMUX) && has("termguicolors"))
-  set termguicolors
+if &term =~ '256color'
+	" disable background color erase
+	set t_ut=
 endif
 
-" }}}
+if (has('mac') && empty($TMUX) && has("termguicolors"))
+	set termguicolors
+endif
 
-
-" mix-format {{{
-let g:mix_format_on_save = 1
-" }}}
-
-" Completion & Snippets {{{
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" Load personal snippets
-let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-" }}}
+" ctags stuff
+" ************************************************
+command! MakeTags !ctags -R --exclude=node_modules .
 
 " make comments and HTML attributes italic
 " ************************************************
@@ -157,32 +137,19 @@ highlight xmlAttrib cterm=italic
 highlight Type cterm=italic
 highlight Normal ctermbg=none
 
-" Accellerated J/K
+" other shizz
 " ************************************************
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
-
+" enable le mouse
+set mouse=a
+" Load personal snippets
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 " vim-closetag/delimitMate conflict resolution/fix
-" ************************************************
-
 let g:closetag_filenames = "*.xml,*.html,*.xhtml,*.phtml,*.php"
 au FileType xml,html,phtml,php,xhtml,js let b:delimitMate_matchpairs = "(:),[:],{:},[:]"
-
-" omnifuncs
-augroup omnifuncs
-    autocmd!
-    autocmd FileType css,scss,sass,less setlocal omnifunc=csscomplete#CompleteCSS
-    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType jsx,js setlocal omnifunc=javascriptcomplete#CompleteJS " removed javascript before jsx
-    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup end
-
-" tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 " Indent line display
 let g:indentLine_char = '|'
-
+" complete stuff
+set completeopt=menu
+set completeopt=preview
 set completeopt-=longest
 set completeopt+=noinsert
-"}}}
