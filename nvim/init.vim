@@ -1,326 +1,153 @@
 source ~/.config/nvim/plugins.vim
+source ~/.config/nvim/lightline.vim
+source ~/.config/nvim/NERDTree.vim
+source ~/.config/nvim/fzf.vim
+source ~/.config/nvim/emmet.vim
+source ~/.config/nvim/ale.vim
+source ~/.config/nvim/deoplete.vim
+source ~/.config/nvim/language_client.vim
+source ~/.config/nvim/airline.vim
+source ~/.config/nvim/keybindings.vim
+source ~/.config/nvim/abbreviations.vim
 
-" Colors/Theme {{{
-set background=dark
-colorscheme dracula
-" }}}
-
-" Base Configuration {{{
+" general
+" ************************************************
 set nocompatible
-filetype off
-filetype plugin indent on
-
-set ttyfast
-
 set laststatus=1
-set encoding=utf-8              " Set default encoding to UTF-8
-set autoread                    " Automatically reread changed files without asking me anything
-set autoindent
-set smartindent
-set backspace=indent,eol,start  " Makes backspace key more powerful.
-set incsearch                   " Shows the match while typing
-set hlsearch
+set encoding=utf-8
+scriptencoding utf-8
+set autoread " detect when a file is changed
+set autowrite " automagically save before :next, :make, etc
+set history=1000 " change history to 1000
+set textwidth=120
+set inccommand=nosplit " don't split when subsituting
+set backspace=indent,eol,start " make backspace behave in a sane manner
+autocmd BufLeave,FocusLost * silent! wall " safe file on focus loss
 
-" Basic vim settings
-set hidden
-set visualbell
-set number
-set nobackup
+" no swap or backup files
+" ************************************************
 set noswapfile
-set noshowmode
+set nobackup
+set nowritebackup
+
+" searching
+" ************************************************
+set ignorecase 		" case insensitive searching
+set smartcase 		" case-sensitive if expresson contains a capital letter
+set hlsearch		" highlight search results
+set incsearch		" set incremental search, like modern browsers
+set nolazyredraw	"don't redraw while executing macros
+let g:ackprg = 'ag --nogroup --nocolor --column' " enable ag instead of ack
+set magic 		" set magic on for regex
+
+" error bells
+" ************************************************
+set noerrorbells
+set visualbell
+set t_vb=
+set tm=500
+set clipboard+=unnamedplus
+set pastetoggle=<f6>
+set nopaste
+set splitright                                                  " Split vertical windows right to the current windows
+set splitbelow                                                  " Split horizontal windows below to the current windows
+" auto: highlight paren match color control
+autocmd BufRead,BufNewFile * syn match parens /[(){}]/ | hi parens ctermfg=blue
+filetype plugin indent on
+filetype plugin on
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
-
-" Set the terminal's title
-set title
-
-" Global tab width.
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-
 " Set to show invisibles (tabs & trailing spaces) & their highlight color
 set list listchars=tab:»\ ,trail:·
 
-" Configure spell checking
-nmap <silent> <leader>p :set spell!<CR>
-set spelllang=en_us
+" apperance
+" ************************************************
+syntax on
+set number		" show line numbers
+"set relativenumber	" show relative line numbers
+set wrap		" turn on line wrapping
+set wrapmargin=8	" wrap lines when coming withing n characters
+set linebreak		" set soft wrapping
+set autoindent		" automagically set indent of new line
+set ttyfast		" faster redrawing
+set diffopt+=vertical
+set laststatus=2 	" show status line at all time
+set so=7 		" set 7 lines to the cursors - when moving vertical
+set wildmenu 		" enhance command line completion
+set hidden 		" current buffer can be put into background
+set showcmd 		" show incomplete commands
+set noshowmode 		" don't show which mode disabled for Powerline
+set wildmode=list:longest " complete files like a shell
+set scrolloff=3 	" lines of text around cursor
+set shell=$SHELL
+set cmdheight=1 	" command bar height
+set title 		" set terminal title
+set showmatch 		" show matching braces
+set mat=2 		" how many tenths of a second to blink
 
-" Set leader to comma
-let mapleader = ","
+" colorscheme
+" ************************************************
+set termguicolors
+set background=dark
+colo onedark
 
-" Send all vim registers to the mac clipboard
-set clipboard=unnamed
+" tab control
+" ************************************************
+set noexpandtab 	" insert tabs rather than spaces for <Tab>
+set smarttab 		" tab respects 'tabstop', 'shifwidth', and 'softtabstop'
+set tabstop=4 		" the visible width of tabs
+set softtabstop=4 	" edit as if the tabs are 4 characters wide
+set shiftwidth=4	" number of spaces to use for indent and unindent
+set shiftround 		" round indent to a multiple of 'shiftwidth'
 
-" Default to magic mode when using substitution
-cnoremap %s/ %s/\v
-cnoremap \>s/ \>s/\v
-" }}}
+" dev icons
+" ************************************************
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+" code folding settings
+" toggle invisible characters
 
-" Terminal Mode Configuration {{{
-" Terminal mode mappings
-tnoremap <Esc> <C-\><C-n>
-" }}}
+" enable 24 bit color if supported
+" ************************************************
+set t_Co=256		" Tell vim that the terminal supports 256 colors
 
-" Helper Functions and Mappings {{{
-" Easily manage quick fix windows
-map <silent> <C-n> :cnext<CR>
-map <silent> <C-m> :cprevious<CR>
-nnoremap <silent> <leader>q :cclose<CR>
+if &term =~ '256color'
+	" disable background color erase
+	set t_ut=
+endif
 
-" Capture current file path into clipboard
-function! CaptureFile()
-  let @+ = expand('%')
-endfunction
-map <leader>f :call CaptureFile()<cr>
-
-" Rename current file
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'))
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
-endfunction
-map <leader>n :call RenameFile()<cr>
-
-" Strip whitespace on save
-fun! <SID>StripTrailingWhitespaces()
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfun
-
-command -nargs=0 Stripwhitespace :call <SID>StripTrailingWhitespaces()
-
-" change history to 1000
-set history=1000
-
-" enable 24 bit color support if supported
 if (has('mac') && empty($TMUX) && has("termguicolors"))
-    set termguicolors
+	set termguicolors
 endif
 
-" Fix indentation in file
-map <leader>i mmgg=G`m<CR>
-
-" Toggle highlighting of search results
-nnoremap <leader><space> :nohlsearch<cr>
-
-" Open Buffer explorer
-nnoremap ; :BufExplorer<cr>
-
-" Unsmart Quotes
-nnoremap guq :%s/\v[“”]/"/g<cr>
-" }}}
-
-" language-server {{{
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['/usr/local/lib/node_modules/javascript-typescript-langserver/lib/language-server.stdio.js'],
-    \ }
-
-" Automatically start language servers.
-let g:LanguageClient_autoStart = 1
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-" }}}
-
-" python-support {{{
-" for python completions
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'jedi')
-" language specific completions on markdown file
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'mistune')
-
-" utils, optional
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'psutil')
-let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'setproctitle')
-" }}}
-
-" neomake {{{
-let g:neomake_elixir_enabled_makers = ['credo']
-let g:neomake_go_enabled_makers = ['go']
-let g:neomake_ruby_enabled_makers = ['mri']
-" }}}
-
-" mix-format {{{
-let g:mix_format_on_save = 1
-" }}}
-
-" emmet-vim {{{
-let g:user_emmet_settings = {
-\  'javascript' : {
-\      'extends' : 'jsx',
-\  },
-\}
-" }}}
-
-" vim-markdown {{{
-let g:vim_markdown_toml_frontmatter = 1
-let g:vim_markdown_folding_disabled = 1
-" }}}
-
-" vim-go {{{
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_list_type = "quickfix"
-let g:go_fmt_command = "goimports"
-let g:go_snippet_engine = "neosnippet"
-let g:go_highlight_types = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_extra_types = 1
-let g:go_auto_type_info = 1
-let g:go_auto_sameids = 1
-" }}}
-
-" vim-json {{{
-let g:vim_json_syntax_conceal = 0
-" }}}
-
-" vim-test {{{
-let test#strategy = "neovim"
-
-" Add hotkeys for vim-test
-nmap <silent> <leader>t :TestFile<CR>
-nmap <silent> <leader>T :TestNearest<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
-" }}}
-
-" vim-polyglot {{{
-let g:jsx_ext_required = 0
-" }}}
-
-" Completion & Snippets {{{
-
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" Load personal snippets
-let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
-" }}}
-
-" Ctrlp {{{
-
-let g:ctrlp_match_window = "bottom,order:btt"   " Order file matches from bottom to top
-let g:ctrlp_dont_split = 'netrw'                " Prevent from opening a new window
-let g:ctrlp_working_path_mode = 0               " Don't change working directory based on current buffer
-
-if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-else
-  " Use the silver search if ripgrep is missing
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g "" -U'
-  let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp' " Persist the CtrlP cache
-  let g:ctrlp_use_caching = 1                     " Enable CtrlP caching
-endif
-
-" }}}
-
-" Auto-commands {{{
-if has("autocmd")
-  " always start terminal in insert mode
-  autocmd BufWinEnter,WinEnter term://* startinsert
-
-  " Execute NeoMake makers
-  autocmd BufWritePost * Neomake
-  " autocmd BufReadPost * Neomake
-
-  " StripTrailingWhitespaces
-  autocmd BufWritePre * Stripwhitespace
-
-  " To spell check all git commit messages
-  au BufNewFile,BufRead COMMIT_EDITMSG set spell nonumber nolist wrap linebreak
-
-  " Set filetype tab settings
-  autocmd FileType ruby,json,haml,eruby,yaml,html,javascript,coffee,sass,cucumber,stylus,css,xml,htmldjango set ai ts=2 sw=2 sts=2 et
-  autocmd FileType python,doctest set ai ts=4 sw=4 sts=4 et
-
-  " Enable auto-completion
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
-  " Set Syntax Highlighting for odd file types
-  augroup filetypedetect
-    au BufNewFile,BufRead .gitconfig,.git/* set noet
-    au BufNewFile,BufRead Dockerfile* setf dockerfile
-    au BufNewFile,BufRead *.fizz setf fizz
-    au BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
-    au BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
-  augroup END
-
-  " Set Ruby specific settings
-  au FileType ruby nmap <leader>bp orequire "pry"; binding.pry<esc>^
-
-  " Set Elixir specific settings
-  au FileType elixir nmap <leader>bp orequire IEx; IEx.pry<esc>^
-
-  " Set Go specific mappings
-  au FileType go set ai ts=2 sw=2 sts=2 noet nolist autowrite
-  au FileType fizz set ai ts=2 sw=2 sts=2 noet nolist autowrite
-
-  " Set ERB specific settings
-  au FileType eruby nmap <leader>bp o<% require "pry"; binding.pry %><esc>^
-
-  " Restore cursor position
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-endif
-
- " wipeout buffer
-nmap <silent> <leader>b :bw<cr>
-
-" set paste toggle
-set pastetoggle=<leader>v
-
-" Textmate style indention
-vmap <leader>[ <gv
-vmap <leader>] >gv
-nmap <leader>[ <<
-nmap <leader>] >>
+" ctags stuff
+" ************************************************
+command! MakeTags !ctags -R --exclude=node_modules .
 
 " make comments and HTML attributes italic
+" ************************************************
 highlight Comment cterm=italic
 highlight htmlArg cterm=italic
 highlight xmlAttrib cterm=italic
 highlight Type cterm=italic
 highlight Normal ctermbg=none
 
-" Abbreviations
-abbr funciton function
-abbr teh the
-abbr tempalte template
-abbr fitler filter
-abbr cosnt const
-abbr attribtue attribute
-abbr attribuet attribute
-
-
-"}}}
+" other shizz
+" ************************************************
+" enable le mouse
+set mouse=a
+" Load personal snippets
+let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+" vim-closetag/delimitMate conflict resolution/fix
+let g:closetag_filenames = "*.xml,*.html,*.xhtml,*.phtml,*.php"
+au FileType xml,html,phtml,php,xhtml,js let b:delimitMate_matchpairs = "(:),[:],{:},[:]"
+" Indent line display
+let g:indentLine_char = '|'
+" complete stuff
+set completeopt=menu
+set completeopt=preview
+set completeopt-=longest
+set completeopt+=noinsert
