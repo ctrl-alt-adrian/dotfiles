@@ -1,4 +1,5 @@
 " NERDTree {{{
+let NERDTreeMapOpenInTab='\r'
 let g:NERDTreeWinPos = "left"
 let g:NERDTreeWinSize = 21
 let g:NERDSpaceDelims = 1	" add spaces after comment delimiters by default
