@@ -125,6 +125,17 @@ if (has('mac') && empty($TMUX) && has("termguicolors"))
 	set termguicolors
 endif
 
+" ncm2/deoplete/language server settings
+" ************************************************
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+" start deoplete
+let g:deoplete#enable_at_startup = 1
+" :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+" turn on omni completion
+set omnifunc=syntaxcomplete#Complete
+
 " ctags stuff
 " ************************************************
 command! MakeTags !ctags -R --exclude=node_modules .
@@ -149,13 +160,9 @@ let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
 " vim-closetag/delimitMate conflict resolution/fix
 let g:closetag_filenames = "*.xml,*.html,*.xhtml,*.phtml,*.php"
 au FileType xml,html,phtml,php,xhtml,js let b:delimitMate_matchpairs = "(:),[:],{:},[:]"
+
 " Indent line display
 let g:indentLine_char = '|'
-" complete stuff
-set completeopt=menu
-set completeopt=preview
-set completeopt-=longest
-set completeopt+=noinsert
 
 let g:deoplete#enable_at_startup = 1		" start deoplete 
 " guyo + limelight integration
@@ -163,3 +170,8 @@ autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 " don't run typescript diagnostics by default
 let g:nvim_typescript#diagnosticsEnable = 0
+
+" neovim terminal
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+autocmd BufEnter term://* startinsert
+autocmd TermOpen * set bufhidden=hide

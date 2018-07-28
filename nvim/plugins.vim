@@ -23,11 +23,12 @@ Plug 'itchyny/lightline.vim'                " lighter statusbar
 Plug 'sickill/vim-pasta'
 Plug 'nicknisi/vim-base16-lightline'
 Plug 'joshdick/onedark.vim'
-Plug 'scrooloose/nerdtree'					" File system explorer
+Plug 'scrooloose/nerdtree'					" file system explorer
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'				" Add filetype gliph icons
-Plug 'jlanzarotta/bufexplorer'              "Switch between buffers
+Plug 'ryanoasis/vim-devicons'				" add filetype gliph icons
+Plug 'jlanzarotta/bufexplorer'              " switch between buffers
+Plug 'vimlab/split-term.vim'                " neovim terminal utilities
 
 " editor - editing coding focused
 " ************************************************
@@ -42,6 +43,7 @@ Plug 'chrisbra/NrrwRgn'                     " A Vim plugin for select region edi
 Plug 'rhysd/accelerated-jk'                 " Acellerate up-down moving
 Plug 'craigemery/vim-autotag'               " autogenerate ctags
 Plug 'terryma/vim-multiple-cursors'         " Sublime Text multi-currsor support
+Plug 'ervandew/supertab'                    " tab completions
 
 " Tim Pope's plugins
 " ************************************************
@@ -105,7 +107,11 @@ Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] }
 
 " code completion / autocomplete
 " ************************************************
-if has('nvim')
+Plug 'ncm2/ncm2'
+" ncm2 requires nvim-yarp
+Plug 'roxma/nvim-yarp'
+
+if has('neim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
   Plug 'Shougo/deoplete.nvim'
