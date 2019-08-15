@@ -9,15 +9,17 @@ alias vim='nvim'
 # go home!
 alias home='~/'
 # .oh-my-zsh custom folder
-alias omzsh='~/.oh-my-zsh/custom'
+alias myzsh='~/.oh-my-zsh/custom'
 # dotfile shortcut
-alias dotfiles='~/git/dotfiles'
+alias dotfiles='~/git-clones/dotfiles'
 # desktop shortcut
 alias desktop='~/Desktop'
 # downloads shortcut
 alias downloads='~/Downloads'
+# pictures
+alias pictures='~/Pictures'
 # git shortcut
-alias mgit='~/git'
+alias gitclones='~/git-clones'
 
 # ip addressing help
 #alias check='nslookup
