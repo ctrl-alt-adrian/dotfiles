@@ -13,6 +13,10 @@
   (add-hook 'typescript-mode-hook #'flycheck-mode)
   (setq typescript-indent-level 2))
 
+;; angualar
+(def-package! ng2-mode
+  :after typescript-mode)
+
 (setq js-indent-level 2
       js2-basic-offset 2)
 
@@ -27,6 +31,31 @@
         web-mode-code-indent-offset 2
         web-mode-enable-auto-quoting nil
         web-mode-auto-close-style 2))
+
+
+;; typescript
+;; (defun setup-tide-mode ()
+;;   (interactive)
+;;   (tide-setup)
+;;   (flycheck-mode +1)
+;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;;   (eldoc-mode +1)
+;;   (tide-hl-identifier-mode +1)
+;;   ;; company is an optional dependency. You have to
+;;   ;; install it separately via package-install
+;;   ;; `M-x package-install [ret] company`
+;;   (company-mode +1))
+
+;; aligns annotation to the right hand side
+;; (setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+;; (add-hook 'before-save-hook 'tide-format-before-save)
+
+;; (add-hook 'typescript-mode-hook #'setup-tide-mode)
+;; (setq typescript-indent-level 2)
+;; tell tide to look at node
+(setq tide-tsserver-executable "node_modules/typescript/bin/tsserver")
 ;; General
 ;; EVIL MODE
 ;; (require 'evil)

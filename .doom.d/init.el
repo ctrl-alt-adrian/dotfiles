@@ -182,3 +182,18 @@
 
 ;; add to ~/.doom.d/init.el
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("8c847a5675ece40017de93045a28ebd9ede7b843469c5dec78988717f943952a" "2f0cbe053485bccbbbb582acdba7c7c9585ad808ee8ab32f0d727c3d39b42275" "1d265677f99a321b640e4d762fba7c5e32ebb75250999ba53577e2a9eb009a3e" "e838d6375a73fda607820c65eb3ea1f9336be7bd9a5528c9161e10c4aa663b5b" "ef4edbfc3ec509612f3cf82476beddd2aeb3da7bdc3a35726337a0cc838a4ef4" "e95ad48fd7cb77322e89fa7df2e66282ade015866b0c675b1d5b9e6ed88649b4" "045496bf9a9de2be2266930507bf6533a0e61c4686994af5602d172ebab8347a" "f5568ed375abea716d1bdfae0316d1d179f69972eaccd1f331b3e9863d7e174a" "cb477d192ee6456dc2eb5ca5a0b7bd16bdb26514be8f8512b937291317c7b166" "4e132458143b6bab453e812f03208075189deca7ad5954a4abb27d5afce10a9a" "9c27124b3a653d43b3ffa088cd092c34f3f82296cf0d5d4f719c0c0817e1afa6" "e3c87e869f94af65d358aa279945a3daf46f8185f1a5756ca1c90759024593dd" "b0fd04a1b4b614840073a82a53e88fe2abc3d731462d6fde4e541807825af342" "155a5de9192c2f6d53efcc9c554892a0d87d87f99ad8cc14b330f4f4be204445" "34c99997eaa73d64b1aaa95caca9f0d64229871c200c5254526d0062f8074693" default)))
+ '(ns-auto-titlebar-mode t nil (ns-auto-titlebar)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

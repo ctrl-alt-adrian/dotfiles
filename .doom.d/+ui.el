@@ -1,5 +1,9 @@
 ;;; ~/.doom.d/+ui.el -*- lexical-binding: t; -*-
 
+;; set theme
+(setq doom-theme 'doom-molokai)
+;; set titlebar to transparent
+(setq ns-auto-hide-menu-bar t)
 ;; set font
 (setq
  doom-font (font-spec :family "Source Code Pro" :size 15)
