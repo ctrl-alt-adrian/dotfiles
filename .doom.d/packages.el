@@ -9,3 +9,4 @@
 (package! prettier-js)
 (package! vue-mode)
 (package! origami)
+(package! ng2-mode)
