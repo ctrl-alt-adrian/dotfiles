@@ -6,22 +6,39 @@ alias vim='nvim'
 
 # Shortcuts!
 
-# go home!
-alias home='~/'
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	# go home!
+	alias home='/mnt/c/Users/adrian'
+	# dotfile shortcut
+	alias dotfiles='/mnt/c/Users/adrian/git-clones/dotfiles'
+	# desktop shortcut
+	alias desktop='/mnt/c/Users/adrian/Desktop'
+	# downloads shortcut
+	alias downloads='/mnt/c/Users/adrian/Downloads'
+	# pictures
+	alias pictures='/mnt/c/Users/adrian/Pictures'
+	# git shortcut
+	alias gitclones='/mnt/c/Users/adrian/git-clones'
+	# projects
+	alias projects='/mnt/c/Users/adrian/projects'
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+	# go home!
+	alias home='~/'
+	# dotfile shortcut
+	alias dotfiles='~/git-clones/dotfiles'
+	# desktop shortcut
+	alias desktop='~/Desktop'
+	# downloads shortcut
+	alias downloads='~/Downloads'
+	# pictures
+	alias pictures='~/Pictures'
+	# git shortcut
+	alias gitclones='~/git-clones'
+	# projects
+	alias projects='~/projects'
+fi
 # .oh-my-zsh custom folder
 alias myzsh='~/.oh-my-zsh/custom'
-# dotfile shortcut
-alias dotfiles='~/git-clones/dotfiles'
-# desktop shortcut
-alias desktop='~/Desktop'
-# downloads shortcut
-alias downloads='~/Downloads'
-# pictures
-alias pictures='~/Pictures'
-# git shortcut
-alias gitclones='~/git-clones'
-# projects
-alias projects='~/projects'
 # symlink
 alias symlink="ln -s"
 
