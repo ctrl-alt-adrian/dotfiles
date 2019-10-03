@@ -1,6 +1,7 @@
 # shortcuts
-alias msprojects='~/work/media-sourcery'
+alias mediasourcery='~/work/media-sourcery'
 alias docverify='~/work/media-sourcery/document-verification'
+alias packapproval='~/work/media-sourcery/packet-approval'
 
 # building
 alias msdevr='npm run build:devr'
