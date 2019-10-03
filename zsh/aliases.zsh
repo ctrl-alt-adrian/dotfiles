@@ -21,6 +21,10 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	alias gitclones='/mnt/c/Users/adrian/git-clones'
 	# projects
 	alias projects='/mnt/c/Users/adrian/projects'
+	# open cmd
+	alias open="explorer.exe"
+	# copy cmd
+	alias pbcopy="clip.exe"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	# go home!
 	alias home='~/'
