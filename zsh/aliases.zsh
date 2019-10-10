@@ -24,7 +24,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	# open cmd
 	alias open="explorer.exe"
 	# copy cmd
-	alias pbcopy="clip.exe"
+	alias pbcopy="clip.exe <"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	# go home!
 	alias home='~/'
