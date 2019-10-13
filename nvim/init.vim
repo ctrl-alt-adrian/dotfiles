@@ -4,9 +4,7 @@ source ~/.config/nvim/lightline.vim
 source ~/.config/nvim/NERDTree.vim
 source ~/.config/nvim/fzf.vim
 source ~/.config/nvim/emmet.vim
-" source ~/.config/nvim/ale.vim
-" source ~/.config/nvim/deoplete.vim
-" source ~/.config/nvim/language_client.vim
+source ~/.config/nvim/coc.vim
 source ~/.config/nvim/keybindings.vim
 source ~/.config/nvim/abbreviations.vim
 
@@ -39,6 +37,10 @@ set incsearch		" set incremental search, like modern browsers
 set nolazyredraw	"don't redraw while executing macros
 let g:ackprg = 'ag --nogroup --nocolor --column' " enable ag instead of ack
 set magic 		" set magic on for regex
+" highlight conflicts
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$' 
+" clear highlight search
+noremap <space> :set hlsearch! hlsearch?<cr>
 
 " error bells
 " ************************************************
