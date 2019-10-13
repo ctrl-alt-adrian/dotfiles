@@ -142,3 +142,6 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/screenshots
+
+# neovim ignores
+~/.config/nvim/plugged
