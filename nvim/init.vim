@@ -1,243 +1,177 @@
-" Specify a directory for plugins
-" - For Neovim: stdpath('data') . '/plugged'
-" - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
+" load configs
+source ~/.config/nvim/plugins.vim
+source ~/.config/nvim/lightline.vim
+source ~/.config/nvim/NERDTree.vim
+source ~/.config/nvim/fzf.vim
+source ~/.config/nvim/emmet.vim
+" source ~/.config/nvim/ale.vim
+" source ~/.config/nvim/deoplete.vim
+" source ~/.config/nvim/language_client.vim
+source ~/.config/nvim/keybindings.vim
+source ~/.config/nvim/abbreviations.vim
 
-" General
-syntax enable
-" Themes
-Plug 'shapeoflambda/dark-purple.vim'
-Plug 'doums/darcula'
-
-" Lightline
-Plug 'itchyny/lightline.vim'
-" lightline theme
-" let g:lightline = { 'colorscheme': 'darcula' }
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \		    [ 'gitbranch'],
-      \             ['readonly', 'filename', 'modified' ] ],
-      \   'right': [ ['percent'], [ 'lineinfo' ],
-      \              [ 'filetype', 'fileformat', 'fileencoding' ],
-      \              [ 'gitblame', 'currentfunction', 'cocstatus', 'linter_errors', 'linter_warnings'] ]
-      \ },
-      \ 'component_expand': {
-      \ },
-      \ 'component_type': {
-      \ 	'readonly' : 'error',
-      \		'linter_warnings': 'warning',
-      \		'linter_errors': 'error'
-      \ },
-      \ 'component_function': {
-      \	  'fileencoding': 'helpers#lightline#fileEncoding',
-      \   'filename': 'helpers#lightline#fileName',
-      \   'fileformat': 'helpers#lightline#fileFormat',
-      \   'filetype': 'helpers#lightline#fileType',
-      \   'gitbranch': 'helpers#lightline#gitBranch',
-      \	  'cocstatus': 'coc#status',
-      \   'currentfunction': 'helpers#lightline#currentFunction',
-      \   'gitblame': 'helpers#lightline#gitBlame'
-      \ },
-      \ 'tabline': {
-      \ 'left':  [['tabs']],
-      \ 'right': [[ 'close' ]]
-      \ },
-      \ 'tab': {
-      \	  'active': [ 'filename', 'modified'],
-      \   'inactive': [ 'filename', 'modified'],
-      \	},
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
-colorscheme darcula
-
-set termguicolors
-set t_Co=256
-
+" general
+" ************************************************
+set nocompatible
+set laststatus=1
+set encoding=utf-8
+scriptencoding utf-8
 set autoread " detect when a file is changed
+set autowrite " automagically save before :next, :make, etc
 set history=1000 " change history to 1000
-set textwidth=120 " may change
+set textwidth=120
+set inccommand=nosplit " don't split when subsituting
+set backspace=indent,eol,start " make backspace behave in a sane manner
+autocmd BufLeave,FocusLost * silent! wall " safe file on focus loss
 
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" no swap or backup files
+" ************************************************
+set noswapfile
+set nobackup
+set nowritebackup
 
-set backspace=indent,eol,start " make backspace behave
-set clipboard=unnamed
+" searching
+" ************************************************
+set ignorecase 		" case insensitive searching
+set smartcase 		" case-sensitive if expresson contains a capital letter
+set hlsearch		" highlight search results
+set incsearch		" set incremental search, like modern browsers
+set nolazyredraw	"don't redraw while executing macros
+let g:ackprg = 'ag --nogroup --nocolor --column' " enable ag instead of ack
+set magic 		" set magic on for regex
 
-if has('mouse')
-	set mouse=a
-endif
-
-" Searching
-set ignorecase " case insensitive searching
-set smartcase " case-sensitive if expression contains a capital letter
-set hlsearch "highlight search results
-set incsearch " set incremental search
-set nolazyredraw " don't redraw while executing macros
-set magic " set magic on, for regex
 " error bells
+" ************************************************
 set noerrorbells
 set visualbell
 set t_vb=
 set tm=500
+set clipboard+=unnamedplus
+set pastetoggle=<f6>
+set nopaste
+set splitright                                                  " Split vertical windows right to the current windows
+set splitbelow                                                  " Split horizontal windows below to the current windows
 
-" Appearance {{{
-set number " show line numbers
-set linebreak " set soft wrapping
-set autoindent " automagically set indent of new line
-set ttyfast "faster redrawing
-set laststatus=2 " show the status line all the time
-set wildmenu "enhanced command line completion
-set hidden " current buffer can be put into background
-set showcmd " show incomplete commands
-set noshowmode " don't show which mode disabled for PowerLine
-set title " set terminal title
-set showmatch " show matching braces
-set mat=2 " how many tentsh of a second to blink
-set updatetime=300
-set signcolumn=yes
-set shortmess+=c
+" auto: highlight paren match color control
+autocmd BufRead,BufNewFile * syn match parens /[(){}]/ | hi parens ctermfg=blue
+filetype plugin indent on
+filetype plugin on
 
-match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$' " highlight conflicts
-set pastetoggle=<leader>v " set paste toggle
+" highlight conflicts
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+" Set to show invisibles (tabs & trailing spaces) & their highlight color
+set list listchars=tab:»\ ,trail:·
 
-"edit ~/.config/nvim/init.vim
-map <leader>ev :e! ~/.config/nvim/init.vim<cr>
-" edit gitconfig
-map <leader>eg :e! ~/.gitconfig<cr>
+" apperance
+" ************************************************
+syntax on
+set number		" show line numbers
+"set relativenumber	" show relative line numbers
+set wrap		" turn on line wrapping
+set wrapmargin=8	" wrap lines when coming withing n characters
+set linebreak		" set soft wrapping
+set autoindent		" automagically set indent of new line
+set ttyfast		" faster redrawing
+set diffopt+=vertical
+set laststatus=2 	" show status line at all time
+set so=7 		" set 7 lines to the cursors - when moving vertical
+set wildmenu 		" enhance command line completion
+set hidden 		" current buffer can be put into background
+set showcmd 		" show incomplete commands
+set noshowmode 		" don't show which mode disabled for Powerline
+set wildmode=list:longest " complete files like a shell
+set scrolloff=3 	" lines of text around cursor
+set shell=$SHELL
+set cmdheight=1 	" command bar height
+set title 		" set terminal title
+set showmatch 		" show matching braces
+set mat=2 		" how many tenths of a second to blink
 
-" clear highlighted search
-noremap <space> :set hlsearch! hlsearch?<cr>
+" colorscheme
+" ************************************************
+set termguicolors
+set background=dark
+colorscheme darcula
 
-" remove extra whitespace
-nmap <leader><space> :%s/\s\+$<cr>
-nmap <leader><space><space> :%s/\n\{2,}/\r\r/g<cr>
+" tab control
+" ************************************************
+set noexpandtab 	" insert tabs rather than spaces for <Tab>
+set smarttab 		" tab respects 'tabstop', 'shifwidth', and 'softtabstop'
+set tabstop=2 		" the visible width of tabs
+set softtabstop=2 	" edit as if the tabs are 4 characters wide
+set shiftwidth=2	" number of spaces to use for indent and unindent
+set shiftround 		" round indent to a multiple of 'shiftwidth'
 
-inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
+" dev icons
+" ************************************************
+let g:WebDevIconsOS = 'Darwin'
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:DevIconsEnableFolderExtensionPatternMatching = 1
+" code folding settings
+" toggle invisible characters
 
-inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
+" enable 24 bit color if supported
+" ************************************************
+set t_Co=256		" Tell vim that the terminal supports 256 colors
+set termguicolors
 
-nmap <leader>l :set list!<cr>
+if &term =~ '256color'
+	" disable background color erase
+	set t_ut=
+endif
 
-" switch between current and last buffer
-nmap <leader>. <c-^>
+if (has('mac') && empty($TMUX) && has("termguicolors"))
+	set termguicolors
+endif
 
-" enable . command in visual mode
-vnoremap . :normal .<cr>
+" ncm2/deoplete/language server settings
+" ************************************************
+" enable ncm2 for all buffers
+" autocmd BufEnter * call ncm2#enable_for_buffer()
+" start deoplete
+" let g:deoplete#enable_at_startup = 1
+" :help Ncm2PopupOpen for more information
+" set completeopt=noinsert,menuone,noselect
+" turn on omni completion
+" set omnifunc=syntaxcomplete#Complete
 
-" substitute, search, and appreviate multiple variants of a word
-Plug 'tpope/vim-abolish'
-" search inside files
-Plug 'wincent/ferret'
-" easy peasy commenting
-Plug 'tpope/vim-commentary'
-" mappings
-Plug 'tpope/vim-unimpaired'
-" endings for html, xml, etc...
-Plug 'tpope/vim-ragtag'
-" easily delete, change and add surroundings in pairs
-Plug 'tpope/vim-surround'
-" better tmux integration
-Plug 'benmills/vimux'
-" enable repeating other supported commands with the . command
-Plug 'tpope/vim-repeat'
-" single/multi line code handler: gS - split one line into multiple, gJ - combine multiple lines into one
-Plug 'AndrewRadev/splitjoin.vim'
-" detect indent style
-Plug 'tpope/vim-sleuth'
-" context-aware pasting
-Plug 'sickill/vim-pasta'
+" ctags stuff
+" ************************************************
+command! MakeTags !ctags -R --exclude=node_modules .
 
-" Startify: Fancy startup screen for vim {{{
-	Plug 'mhinz/vim-startify'
-"}}}
+" make comments and HTML attributes italic
+" ************************************************
+highlight Comment cterm=italic
+highlight htmlArg cterm=italic
+highlight xmlAttrib cterm=italic
+highlight Type cterm=italic
+highlight Normal ctermbg=none
 
+" coding
+" ************************************************
+augroup filetype javascript syntax=javascript
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" other shizz
+set mouse=a	" enable le mouse
+" ************************************************
+" Load personal snippets
+" let g:neosnippet#snippets_directory='~/.config/nvim/snippets'
+" vim-closetag/delimitMate conflict resolution/fix
+" let g:closetag_filenames = "*.xml,*.html,*.xhtml,*.phtml,*.php"
+" au FileType xml,html,phtml,php,xhtml,js let b:delimitMate_matchpairs = "(:),[:],{:},[:]"
 
-" html/templates {{{
-" emmet for vim
-Plug 'mattn/emmet-vim'
-let g:user_emmet_leader_key=','
-" match tags in html
-Plug 'gregsexton/MatchTag', { 'for': 'html' }
-" html5 support
-Plug 'othree/html5.vim', { 'for': 'html' }
-" mustache support
-Plug 'mustache/vim-mustache-handlebars'
-" pug / jade support
-Plug 'digitaltoad/vim-pug', { 'for': ['jade', 'pug']}
-" }}}
+" Indent line display
+let g:indentLine_char = '|'
 
-" Javascript Development {{{
-Plug 'prettier/vim-prettier', {
-			\ 'do': 'npm install',
-			\ 'for': [
-			\'javascript',
-			\'typescript',
-			\'css',
-			\'less',
-			\'scss',
-			\'sass',
-			\'json',
-			\'graphql',
-			\'markdown',
-			\'vue',
-			\'yaml',
-			\'html'] }
+" let g:deoplete#enable_at_startup = 1		" start deoplete 
+" guyo + limelight integration
+" autocmd! User GoyoEnter Limelight
+" autocmd! User GoyoLeave Limelight!
+" don't run typescript diagnostics by default
+" let g:nvim_typescript#diagnosticsEnable = 0
 
-Plug 'maxmellon/vim-jsx-pretty'
-let g:vim_jsx_pretty_highlight_close_tag = 1
-Plug 'othree/yajs.vim', { 'for': ['javascript', 'javascript.jsx', 'html'] }
-Plug 'moll/vim-node', { 'for': 'javascript' }
-" Plug 'pangloss/vim-javascript'
-" }}}
-
-" Typescript {{{
-Plug 'leafgarland/typescript-vim', { 'for': ['typescript', 'typescript.tsx']}
-"}}}
-
-" Styles {{{
-Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown']}
-Plug 'groenewege/vim-less', { 'for': 'less'}
-Plug 'hail2u/vim-css3-syntax', { 'for': 'css'}
-Plug 'stephenway/postcss.vim', { 'for': 'css'}
-Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss'}
-" }}}
-
-" markdown {{{
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-let g:markdown_fenced_languages = [ 'tsx=typescript.tsx']
-" }}}
-
-" JSON {{{
-Plug 'elzr/vim-json', { 'for': 'json' }
-let g:vim_json_syntax_conceal = 0
-"}}}
-
-" Docker {{{
-Plug 'ekalinin/Dockerfile.vim'
-" Git {{{
-Plug 'tpope/vim-fugitive'
-" }}}
-
-" NerdTree {{{
-Plug 'scrooloose/nerdtree'
-" }}}
-
-" Win tabs
-Plug 'zefei/vim-wintabs'
-Plug 'zefei/vim-wintabs-powerline'
-
-
-
-
-
-
-
-" Initialize plugin system
-
-call plug#end()
+" neovim terminal
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+autocmd BufEnter term://* startinsert
+autocmd TermOpen * set bufhidden=hide
