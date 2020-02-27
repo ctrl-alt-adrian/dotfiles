@@ -25,6 +25,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	alias open="explorer.exe"
 	# copy cmd
 	alias pbcopy="clip.exe <"
+	# majestic
+	alias majestic='npx majestic'
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	# go home!
 	alias home='~/'
@@ -40,6 +42,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 	alias gitclones='~/git-clones'
 	# projects
 	alias projects='~/projects'
+	# majestic
+	alias majestic='npx majestic'
 fi
 # .oh-my-zsh custom folder
 alias myzsh='~/.oh-my-zsh/custom'
