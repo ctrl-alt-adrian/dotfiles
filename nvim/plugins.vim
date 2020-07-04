@@ -1,17 +1,17 @@
 "check whether vim-plug is installed and install it if necessary
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
- if !filereadable(plugpath)
-  ¦ if executable('curl')
-  ¦ ¦ ¦ let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  ¦ ¦ ¦ call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
-  ¦ ¦ ¦ if v:shell_error
-  ¦ ¦ ¦ ¦ ¦ echom "Error downloading vim-plug. Please install it manually.\n"
-  ¦ ¦ ¦ ¦ ¦ exit
-  ¦ ¦ ¦ endif
-  ¦ else
-  ¦ ¦ ¦ echom "vim-plug not installed. Please install it manually or install curl.\n"
-  ¦ ¦ ¦ exit
-  ¦ endif
+  if !filereadable(plugpath)
+    if executable('curl')
+      let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
+        if v:shell_error
+          echom "Error downloading vim-plug. Please install it manually.\n"
+          exit
+        endif
+    else
+      echom "vim-plug not installed. Please install it manually or install curl.\n"
+      exit
+    endif
 endif"
 
 " plug
@@ -20,18 +20,31 @@ call plug#begin('~/.config/nvim/plugged')
 " editor - general
 " ************************************************
 Plug 'sickill/vim-pasta' " context-aware pasting
+Plug 'mbbill/undotree'
+Plug 'vim-utils/vim-man'
+Plug 'mhinz/vim-startify'                   " fancy vim startup screen
 
 " editor - lightline
 " ************************************************
 Plug 'itchyny/lightline.vim'                " lighter statusbar
+Plug 'itchyny/vim-gitbranch'                " shows gitbranch name 
 
 " editor - color schemes
 " ************************************************
-Plug 'shapeoflambda/dark-purple.vim'
 Plug 'doums/darcula'
 Plug 'nicknisi/vim-base16-lightline'
-" Plug 'jlanzarotta/bufexplorer'              " switch between buffers
-" Plug 'vimlab/split-term.vim'                " neovim terminal utilities
+Plug 'alessandroyorba/despacio'
+Plug 'morhetz/gruvbox'
+Plug 'sonph/onehalf', {'rtp': 'vim/'}
+" Plug 'jlanzarotta/bufexplorer'            " switch between buffers
+Plug 'vimlab/split-term.vim'                " neovim terminal utilities
+Plug 'phanviet/vim-monokai-pro'
+Plug 'sainnhe/gruvbox-material'
+Plug 'flazz/vim-colorschemes'
+Plug 'trusktr/seti.vim'
+Plug 'juanedi/predawn.vim'
+Plug 'sainnhe/sonokai'
+Plug 'sainnhe/edge'
 
 " editor - editing coding focused
 " ************************************************
@@ -42,11 +55,13 @@ Plug 't9md/vim-textmanip'                   " Move/Duplicate text intuitively
 Plug 'matze/vim-move'                       " Move lines and selections up and down
 Plug 'coderifous/textobj-word-column.vim'   " Word based column manager
 Plug 'chrisbra/NrrwRgn'                     " A Vim plugin for select region editing
-Plug 'docunext/closetag.vim'              " auto close (X)HTML tags
+Plug 'docunext/closetag.vim'                " auto close (X)HTML tags
 Plug 'rhysd/accelerated-jk'                 " Acellerate up-down moving
 Plug 'craigemery/vim-autotag'               " autogenerate ctags
 Plug 'terryma/vim-multiple-cursors'         " Sublime Text multi-currsor support
 Plug 'ervandew/supertab'                    " tab completions
+Plug 'kshenoy/vim-signature'                " toggle and display marks
+" Plug 'Yggdroot/indentLine'                  " display line indentions
 
 " Tim Pope's plugins
 " ************************************************
@@ -63,15 +78,16 @@ Plug 'tpope/vim-dispatch'                   " Asynchronous build and test dispat
 
 " NERDTree
 " ************************************************
-Plug 'scrooloose/nerdtree'					" file system explorer
+Plug 'scrooloose/nerdtree'                  " file system explorer
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'				" add filetype gliph icons
+" Plug 'ryanoasis/vim-devicons'             " add filetype gliph icons
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " search fzf b2b ack 
 " ************************************************
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install()}}
 Plug 'mileszs/ack.vim'                      " search with ack within Vim
+
 
 " language server
 " ************************************************
@@ -123,6 +139,9 @@ Plug 'othree/csscomplete.vim'                   "Update built-in CSS complete fu
 " Plug 'styled-components/vim-styled-components'  "Bundle for Styled components
 Plug 'wavded/vim-stylus', { 'for': ['stylus', 'markdown'] }
 
+" python
+Plug 'lyuts/vim-rtags'
+
 " markdown
 " ************************************************
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
@@ -139,23 +158,13 @@ Plug 'ekalinin/Dockerfile.vim'
 
 " code completion / autocomplete
 " ************************************************
-Plug 'neoclide/coc.nvim'
-" Plug 'ncm2/ncm2'
-" ncm2 requires nvim-yarp
-" Plug 'roxma/nvim-yarp'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-if has('neim')
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
-endif
 
 " testing
 " ************************************************
-" Plug 'janko-m/vim-test'               "A Vim wrapper for running tests
-" Plug 'craigdallimore/vim-jest-cli'                                " Jest CLI for VIM
+Plug 'janko-m/vim-test'               "A Vim wrapper for running tests
+Plug 'craigdallimore/vim-jest-cli'                                " Jest CLI for VIM
 
 " linting
 " ************************************************
@@ -163,12 +172,19 @@ endif
 
 " moar git!!!
 " ************************************************
-" Plug 'airblade/vim-gitgutter'   " Show git diff in the gutter
+Plug 'airblade/vim-gitgutter'   " Show git diff in the gutter
 
 " writing
 " ************************************************
 " Plug 'junegunn/limelight.vim'   " hyperfocused writing in vim
 " Plug 'junegunn/goyo.vim'        " destraction free writing in vim
 
+" greppage
+" ************************************************
+Plug 'jremmen/vim-ripgrep'
+
+" devicons
+" ************************************************
+Plug 'ryanoasis/vim-devicons'				" add filetype gliph icons
 
 call plug#end()

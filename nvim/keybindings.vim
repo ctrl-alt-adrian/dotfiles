@@ -1,39 +1,86 @@
 " general
 " ************************************************
-let mapleader = "," " set leader to comma
+let mapleader = " " " set leader to comma
 set pastetoggle=<leader>v " set paste toggle
 
 " configure spell checking
+" ************************************************
 nmap <silent> <leader>p :set spell!<CR>
 
 " easily manage quick fix windows
+" ************************************************
 map <silent> <C-n> :cnext<CR>
 map <silent> <C-m> :cprevious<CR>
 nnoremap <silent> <leader>q :cclose<CR>
 
+" switch between panes with hjkl
+" ************************************************
+map <leader>h :wincmd h<CR>
+map <leader>j :wincmd j<CR>
+map <leader>k :wincmd k<CR>
+map <leader>l :wincmd l<CR>
+
+" GoTo code navigation for coc
+" ************************************************
+nmap <Leader>gd <Plug>(coc-definition) 
+nmap <Leader>gy <Plug>(coc-type-definition) 
+nmap <Leader>gi <Plug>(coc-implementation) 
+nmap <Leader>gr <Plug>(coc-references) 
+nmap <Leader>rr <Plug>(coc-rename) 
+nmap <Leader>g[ <Plug>(coc-definition-prev) 
+nmap <Leader>g] <Plug>(coc-definition-next) 
+nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
+nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
+nnoremap <leader>cr :CocRestart
+
 " accellerated j/k
+" ************************************************
 " nmap j <Plug>(accelerated_jk_gj)
 " nmap k <Plug>(accelerated_jk_gk)
 
 " rename current file
+" ************************************************
 map <leader>n :call RenameFile()<cr>
 
 " fix indentation in file
+" ************************************************
 map <leader>i mmgg=G`m<CR>
 
 " toggle highlighting of search results
-nnoremap <leader><space> :nohlsearch<cr>
+" ************************************************
+" nnoremap <leader><space> :set hlsearch! hlsearch?<cr>
+" noremap <space> :set hlsearch! hlsearch?<cr>
 
 " open buffer explorer
+" ************************************************
 nnoremap <leader>; :BufExplorer<cr>
 
 " unsmart quotes
-nnoremap guq :%s/\v[“”]/"/g<cr>
+" ************************************************
+nnoremap guq :%s/\v[""]/"/g<cr>
 
 " wipeout buffer
+" ************************************************
 nmap <silent> <leader>b :bw<cr>
 
+" Show undo tree
+" ************************************************
+nnoremap <leader>u :UndotreeToggle<CR>
+" others
+" ************************************************
+nnoremap <leader>pv :wincmd v<bar> :EX<bar> :vertical resize 30<CR>
+nnoremap <Leader>ps :Rg<Space>
+nnoremap <silent> <Leader>+ :vertical resize +5<CR>
+nnoremap <silent> <Leader>0 :vertical resize 05<CR>
+
+" FuGITive
+" ************************************************
+nmap <leader>gj :diffget //3<CR>
+nmap <leader>gf :diffget //2<CR>
+nmap <leader>gs :G<CR>
+
 " textmate style indention
+" ************************************************
 vmap <leader>[ <gv
 vmap <leader>] >gv
 nmap <leader>[ <<
@@ -44,6 +91,7 @@ nmap <leader>] >>
 nmap ; :Buffers<CR>
 nmap <Leader>t :Files<CR>
 nmap <Leader>r :Tags<CR>
+nmap <Leader>g :GFiles<CR>
 
 " NERDTree
 " ************************************************
@@ -51,6 +99,10 @@ nmap <Leader>r :Tags<CR>
 nmap <C-\> :NERDTreeToggle<CR> " open NERDTree w ctrl \
 " find the current file in nerdtree without needing to reload the drawer
 nmap <silent> <leader>y :NERDTreeFind<cr>
+
+" commentary
+" ************************************************
+nmap <C-c> :Commentary<CR> " toggle comments like VSCode
 
 " language server
 " ************************************************

@@ -2,7 +2,7 @@
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'typescript': ['tsserver', 'tslint'],
-\   'html': []
+let g:NERDTreeBrow
 \}
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = ['prettier']

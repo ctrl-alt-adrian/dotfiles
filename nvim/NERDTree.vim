@@ -1,12 +1,15 @@
 " NERDTree {{{
 let NERDTreeMapOpenInTab='\r'
 let g:NERDTreeWinPos = "left"
-let g:NERDTreeWinSize = 21
+let g:NERDTreeWinSize = 25
 let g:NERDSpaceDelims = 1	" add spaces after comment delimiters by default
 let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
 let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
+let g:netrw_browse_split=2
+let g:netrw_banner = 0
 
  augroup nerdtree
          autocmd!
