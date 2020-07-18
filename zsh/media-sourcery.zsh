@@ -4,13 +4,21 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	alias docverify='/mnt/c/Users/adrian/work/media-sourcery/document-verification'
 	alias packapproval='/mnt/c/Users/adrian/work/media-sourcery/packet-approval'
 	alias verification='/mnt/c/Users/adrian/work/media-sourcery/verification-criteria'
+	alias insurancerepo='/mnt/c/Users/adrian/work/media-sourcery/insurance-repo'
 	alias ccs='/mnt/c/Users/adrian/work/media-sourcery/ccs'
+	alias pwotemplates='/mnt/c/Users/adrian/work/media-sourcery/ccs/pims/src/main/resources/pwo/templates'
+	alias pwoimages='/mnt/c/Users/adrian/work/media-sourcery/ccs/pims/src/main/resources/pwo/images'
+	alias pwoconfiguration='/mnt/c/Users/adrian/work/media-sourcery/ccs/pims/src/main/scala/com/mediasourcery/ccs/pims/pwo'
 elif [["$OSTYPE" == "darwin"* ]]; then
 	alias mediasourcery='~/work/media-sourcery'
 	alias docverify='~/work/media-sourcery/document-verification'
 	alias packapproval='~/work/media-sourcery/packet-approval'
 	alias verification='~/work/media-sourcery/verification-criteria'
+	alias insurancerepo='~/work/media-sourcery/insurance-repo'
 	alias ccs='~/work/media-sourcery/ccs'
+	alias pwotemplates='~/work/media-sourcery/ccs/pims/src/main/resources/pwo/templates'
+	alias pwoimages='~/work/media-sourcery/ccs/pims/src/main/resources/pwo/images'
+	alias pwoconfiguration='~/work/media-sourcery/ccs/pims/src/main/scala/com/mediasourcery/ccs/pims/pwo'
 fi
 
 # building

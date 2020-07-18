@@ -3,6 +3,8 @@ alias reload!='source ~/.zshrc'
 
 # nvim = vim
 alias vim='nvim'
+# nvim init file
+alias nconfig='~/.config/nvim/'
 
 # Shortcuts!
 
@@ -15,6 +17,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	alias desktop='/mnt/c/Users/adrian/Desktop'
 	# downloads shortcut
 	alias downloads='/mnt/c/Users/adrian/Downloads'
+	# documents shortcut
+	alias documents='/mnt/c/Users/adrian/Documents'
 	# pictures
 	alias pictures='/mnt/c/Users/adrian/Pictures'
 	# git shortcut
