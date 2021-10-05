@@ -1,1 +1,0 @@
-(define-package "cycle-themes" "20150402.2009" "A global minor mode to make switching themes easier" '((cl-lib "0.5")) :url "http://github.com/toroidal-code/cycle-themes.el" :keywords '("themes" "utility" "global minor mode"))
