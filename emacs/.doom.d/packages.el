@@ -51,3 +51,4 @@
 
 (package! nvm)
 (package! tree-sitter-langs)
+(package! company-tabnine)
