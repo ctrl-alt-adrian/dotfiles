@@ -1,0 +1,7 @@
+require('config.nightfox')
+require('config.lsp-config.language-servers')
+require('config.lsp-config.nvim-cmp')
+require('config.lua-line')
+require('config.barbar')
+require('config.nvim-tree')
+require('config.treesitter-config')
