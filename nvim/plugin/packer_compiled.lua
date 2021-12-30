@@ -99,6 +99,11 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
+  neovim = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/neovim",
+    url = "https://github.com/rose-pine/neovim"
+  },
   ["nightfox.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nightfox.nvim",
