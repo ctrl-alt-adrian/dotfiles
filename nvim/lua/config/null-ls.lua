@@ -5,7 +5,7 @@ local formatting = null_ls.builtins.formatting
 local sources = {
 	formatting.prettier,
 	formatting.stylua,
-	formatting.clang_format,
+	null_ls.builtins.code_actions.gitsigns,
 }
 
 null_ls.setup({
