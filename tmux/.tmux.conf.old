@@ -1,0 +1,80 @@
+##############################
+#  _                         #
+# | |_ _ __ ___  _   ___  __ #
+# | __| '_ ` _ \| | | \ \/ / #
+# | |_| | | | | | |_| |>  <  #
+#  \__|_| |_| |_|\__,_/_/\_\ #
+#                            #
+#############################
+
+# Reset prefix
+unbind C-b # default prefix key
+set -g prefix C-a
+bind-key a send-prefix # for nested tmux sessions
+
+# large history
+set-option -g history-limit 20000
+
+# set window split
+bind-key v split-window -h
+bind-key b split-window
+
+# allows for faster escape time
+set -s escape-time 0
+
+# hjkl panel traverse
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Fix vim tmux colors
+set -g default-terminal "screen-256color"
+
+# reload config
+bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
+
+# auto windo rename
+set-window-option -g automatic-rename
+
+# status bar
+# set-option -g status-utf8 on
+
+# mouse mode
+set -g mouse on
+bind-key m set-option -g mouse on \; display 'Mouse: ON'
+bind-key M set-option -g mouse off \; display 'Mouse: OFF'
+
+# quickly open a new window
+bind N new-window
+
+# synchronize all panes in a window
+bind y setw synchronize-panes
+# start window numbering at 1 for easier switching
+set -g base-index 1
+# quick pane cycling
+unbind ^A
+bind ^A select-pane -t :.+
+# set vi mode for copy mode
+setw -g mode-keys vi
+# more settings to make copy-mode more vim-like
+unbind [
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+# bind -t vi-copy 'v' begin-selection
+# bind -t vi-copy 'y' copy-selection
+
+##############################
+### Color & Style Settings ###
+##############################
+# source ~/tmux/theme.sh
+# Powerline settings
+set-option -g status on
+set-option -g status-interval 2
+# set-option -g status-utf8 on
+set-option -g status-justify "centre"
+set-option -g status-left-length 60
+set-option -g status-right-length 90
+set-option -g status-left "#(~/tmux/tmux-powerline/powerline.sh left)"
+set-option -g status-right "#(~/tmux/tmux-powerline/powerline.sh right)"
