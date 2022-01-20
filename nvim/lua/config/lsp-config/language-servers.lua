@@ -41,8 +41,9 @@ local servers = {
 	"yamlls",
 	"emmet_ls",
 	"css",
-    "html",
-	"sumneko_lua",
+	"html",
+	"gopls",
+	"eslint",
 }
 
 for _, name in pairs(servers) do

@@ -6,10 +6,12 @@ vim.g.mapleader = " "
 -- mappings
 map("n", "<c-s>", ":w<CR>", {})
 map("i", "<c-s>", "<Essc>:w<CR>a", {})
-map("n", "<c-j>", "<c-w>j", opts)
-map("n", "<c-h>", "<c-w>h", opts)
-map("n", "<c-k>", "<c-w>k", opts)
-map("n", "<c-l>", "<c-w>l", opts)
+map("n", "zj", "<C-W><C-J>", opts)
+map("n", "zh", "<C-W><c-H>", opts)
+map("n", "zk", "<C-W><C-K>", opts)
+map("n", "zl", "<C-W><C-L>", opts)
+map("n", "vs", ":vs<CR>", opts) -- split vertically
+map("n", "sp", ":sp<CR>", opts) -- split horizontaltly
 -- nvimtree toggle
 map("n", "<leader>/", ":NvimTreeToggle<CR>", opts)
 -- telescope mappings
@@ -49,3 +51,21 @@ map("n", "<C-p>", ":BufferPick<CR>", opts)
 map("n", "<Space>bb", ":BufferOrderByBufferNumber<CR>", opts)
 map("n", "<Space>bd", ":BufferOrderByDirectory<CR>", opts)
 map("n", "<Space>bl", ":BufferOrderByLanguage<CR>", opts)
+-- Tagbar
+map("n", "<F8>", ":TagbarToggle<CR>", opts)
+-- Vimspector
+map("n", "<leader>da", ":call vimspector#Launch()<CR>", opts)
+map("n", "<leader>dx", ":call vimspector#Reset()<CR>", opts)
+map("n", "<leader>d_", ":call vimspector#Restart()<CR>", opts)
+map("n", "<leader>dn", ":call vimspector#Continue()<CR>", opts)
+map("n", "<leader>drc", ":call vimspector#Continue()<CR>", opts)
+map("n", "<leader>dh", ":call vimspector#RunToCursor()<CR>", opts)
+map("n", "<leader>di", ":call vimspector#ToggleConditionalBreakpoint()<CR>", opts)
+map("n", "<leader>dX", ":call vimspector#ClearBreakpoints()<CR>", opts)
+-- vs code text selection
+map("n", "<S-up>", "<S-v>k", opts)
+map("n", "<S-down>", "<S-v>j", opts)
+map("i", "<S-up>", "<c-o><S-v>k", opts)
+map("i", "<S-down>", "<c-o><S-v>j", opts)
+map("v", "<S-up>", "<up>", opts)
+map("v", "<S-down>", "<down>", opts)

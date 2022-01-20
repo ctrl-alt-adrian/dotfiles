@@ -23,4 +23,6 @@ set.completeopt = "menuone,noselect"
 set.mouse = "a" -- enable mouse support
 set.clipboard = "unnamedplus" -- copy/paste to system clipboard
 set.swapfile = false -- don't use  a swapfile
-vim.cmd("colorscheme rose-pine")
+set.backup = false -- don't create a backup file
+-- vim.cmd("colorscheme rose-pine")
+vim.g.vimspector_base_dir = vim.fn.expand("$HOME/.config/vimspector-config")

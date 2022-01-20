@@ -69,6 +69,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["DAPInstall.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/DAPInstall.nvim",
+    url = "https://github.com/Pocco81/DAPInstall.nvim"
+  },
   LuaSnip = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/LuaSnip",
@@ -89,15 +94,40 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["coq.artifacts"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/coq.artifacts",
+    url = "https://github.com/ms-jpq/coq.artifacts"
+  },
+  ["coq.thirdparty"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/coq.thirdparty",
+    url = "https://github.com/ms-jpq/coq.thirdparty"
+  },
+  coq_nvim = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/coq_nvim",
+    url = "https://github.com/ms-jpq/coq_nvim"
+  },
   ["dashboard-nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/dashboard-nvim",
     url = "https://github.com/glepnir/dashboard-nvim"
   },
+  ["doom-one.vim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/doom-one.vim",
+    url = "https://github.com/romgrk/doom-one.vim"
+  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["go.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/go.nvim",
+    url = "https://github.com/ray-x/go.nvim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -124,6 +154,16 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
   },
+  nvim = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim",
+    url = "https://github.com/catppuccin/nvim"
+  },
+  ["nvim-align"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-align",
+    url = "https://github.com/RRethy/nvim-align"
+  },
   ["nvim-autopairs"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
@@ -143,6 +183,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-comment",
     url = "https://github.com/terrortylor/nvim-comment"
+  },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
   },
   ["nvim-lsp-installer"] = {
     loaded = true,
@@ -189,20 +239,50 @@ _G.packer_plugins = {
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  tagbar = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/tagbar",
+    url = "https://github.com/preservim/tagbar"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["termcolors.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/termcolors.nvim",
+    url = "https://github.com/psliwka/termcolors.nvim"
+  },
+  ["todo-comments.nvim"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/todo-comments.nvim",
+    url = "https://github.com/folke/todo-comments.nvim"
   },
   ["toggleterm.nvim"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
   },
+  ["vim-afterglow"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vim-afterglow",
+    url = "https://github.com/danilo-augusto/vim-afterglow"
+  },
+  ["vim-maximizer"] = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vim-maximizer",
+    url = "https://github.com/szw/vim-maximizer"
+  },
   ["vim-vsnip"] = {
     loaded = true,
     path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vim-vsnip",
     url = "https://github.com/hrsh7th/vim-vsnip"
+  },
+  vimspector = {
+    loaded = true,
+    path = "/home/adrian/.local/share/nvim/site/pack/packer/start/vimspector",
+    url = "https://github.com/puremourning/vimspector"
   },
   ["which-key.nvim"] = {
     loaded = true,
