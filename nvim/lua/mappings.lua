@@ -12,6 +12,11 @@ map("n", "zk", "<C-W><C-K>", opts)
 map("n", "zl", "<C-W><C-L>", opts)
 map("n", "vs", ":vs<CR>", opts) -- split vertically
 map("n", "sp", ":sp<CR>", opts) -- split horizontaltly
+-- move visually selected lines
+map("n", "<A-k>", ":m .-2<CR>==", opts)
+map("n", "<A-j>", ":m .+1<CR>==", opts)
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 -- nvimtree toggle
 map("n", "<leader>/", ":NvimTreeToggle<CR>", opts)
 -- telescope mappings
@@ -69,3 +74,5 @@ map("i", "<S-up>", "<c-o><S-v>k", opts)
 map("i", "<S-down>", "<c-o><S-v>j", opts)
 map("v", "<S-up>", "<up>", opts)
 map("v", "<S-down>", "<down>", opts)
+-- Maximizer
+map("n", "<c-m>", ":MaximizerToggle<CR>", opts)
