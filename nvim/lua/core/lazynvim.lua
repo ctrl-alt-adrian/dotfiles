@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
 	-- Theme
 	'navarasu/onedark.nvim',
+	'Mofiqul/vscode.nvim',
 
 	-- Quality of Life
 	'numToStr/Comment.nvim',
@@ -35,11 +36,21 @@ local plugins = {
 	'tpope/vim-fugitive',
 	'lewis6991/gitsigns.nvim',
 
+	-- which-key
+	"folke/which-key.nvim",
+
 	-- fuzzy finder
 	{
 		'nvim-telescope/telescope.nvim', tag = '0.1.1',
 		-- or                              , branch = '0.1.1',
-		dependencies = { 'nvim-lua/plenary.nvim' }
+		dependencies = { 
+			'nvim-lua/plenary.nvim',
+			"nvim-telescope/telescope-fzf-native.nvim",
+			build = "make",
+			config = function()
+			require("telescope").load_extension("fzf")
+			end
+		}
 	},
 	-- LSP
 	{
@@ -53,14 +64,22 @@ local plugins = {
 			build = function()
 				pcall(vim.cmd, 'MasonUpdate')
 			end,
-			},
-			{'williamboman/mason-lspconfig.nvim'}, -- Optional
+		},
+		{'williamboman/mason-lspconfig.nvim'}, -- Optional
+		-- useful status updates for LSP
+		'j-hui/fidget.nvim',
 
 		-- Autocompletion
 		{'hrsh7th/nvim-cmp'},     -- Required
 		{'hrsh7th/cmp-nvim-lsp'}, -- Required
 		{'L3MON4D3/LuaSnip'},     -- Required
-		}
+	}
+},
+{
+	"goolord/alpha-nvim",
+	dependencies = {
+		"kyazdani42/nvim-web-devicons",
 	},
+},
 }
 require("lazy").setup(plugins, opts)
