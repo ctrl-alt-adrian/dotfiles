@@ -26,9 +26,9 @@ require("which-key").setup {
   key_labels = {
     -- override the label used to display some keys. It doesn't effect WK in any other way.
     -- For example:
-    -- ["<space>"] = "SPC",
-    -- ["<cr>"] = "RET",
-    -- ["<tab>"] = "TAB",
+    ["<space>"] = "SPC",
+    ["<cr>"] = "RET",
+    ["<tab>"] = "TAB",
   },
   motions = {
     count = true,
@@ -47,7 +47,7 @@ require("which-key").setup {
     position = "bottom", -- bottom, top
     margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
     padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
-    winblend = 0, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+    winblend = 30, -- value between 0-100 0 for fully opaque and 100 for fully transparent
   },
   layout = {
     height = { min = 4, max = 25 }, -- min and max height of the columns

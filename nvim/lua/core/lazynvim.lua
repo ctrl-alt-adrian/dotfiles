@@ -17,24 +17,48 @@ local plugins = {
 	-- Theme
 	'navarasu/onedark.nvim',
 	'Mofiqul/vscode.nvim',
+	'nyoom-engineering/oxocarbon.nvim',
 
 	-- Quality of Life
+	'github/copilot.vim', -- copilot
 	'numToStr/Comment.nvim',
 	'tpope/vim-sleuth',
-	{
-	  'nvim-treesitter/nvim-treesitter', 
-	  version = false,
-	  build = ':TSUpdate',
-	  dependencies = { 'nvim-treesitter/playground' }
+	-- treesitter
+	{ 
+		'nvim-treesitter/nvim-treesitter', 
+		version = false,
+		build = ':TSUpdate',
+		dependencies = { 'nvim-treesitter/playground' }
 
 	},
+	-- vscode like tree
+	{
+		"utilyre/barbecue.nvim",
+		name = "barbecue",
+		version = "*",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"kyazdani42/nvim-web-devicons", -- optional dependency
+		},
+		opts = {
+			-- configurations go here
+		},
+	},
+	'windwp/nvim-autopairs', -- autopairs
 	'mbbill/undotree',
 	-- we in here theprimeagen!!
 	'theprimeagen/harpoon',
 
-	-- Git related plugins
+	-- Git related plugins/
 	'tpope/vim-fugitive',
 	'lewis6991/gitsigns.nvim',
+	'f-person/git-blame.nvim',
+	{
+		'sindrets/diffview.nvim',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+		},
+	},
 
 	-- which-key
 	"folke/which-key.nvim",
@@ -70,16 +94,46 @@ local plugins = {
 		'j-hui/fidget.nvim',
 
 		-- Autocompletion
-		{'hrsh7th/nvim-cmp'},     -- Required
-		{'hrsh7th/cmp-nvim-lsp'}, -- Required
-		{'L3MON4D3/LuaSnip'},     -- Required
-	}
+		{'hrsh7th/nvim-cmp'},         -- Required
+		{'hrsh7th/cmp-nvim-lsp'},     -- Required
+		{'hrsh7th/cmp-buffer'},       -- Optional
+		{'hrsh7th/cmp-path'},         -- Optional
+		{'saadparwaiz1/cmp_luasnip'}, -- Optional
+		{'hrsh7th/cmp-nvim-lua'},     -- Optional
+
+		-- Snippets
+		{'L3MON4D3/LuaSnip'},             -- Required
+		{'rafamadriz/friendly-snippets'}, -- Optional
+	},
 },
+-- start screen
 {
 	"goolord/alpha-nvim",
 	dependencies = {
 		"kyazdani42/nvim-web-devicons",
 	},
 },
+
+	-- Coc
+	{
+		'neoclide/coc.nvim', 
+		branch = 'release',
+	},
+	-- syntax
+	'posva/vim-vue', --vue
+	'fatih/vim-go', -- golang
+	'yuezk/vim-js', -- js
+	'HerringtonDarkholme/yats.vim',
+	'maxmellon/vim-jsx-pretty',
+	--  [[ Debugging ]]
+	'mfussenegger/nvim-dap',
+	'leoluz/nvim-dap-go',
+	'rcarriga/nvim-dap-ui',
+	'theHamsta/nvim-dap-virtual-text',
+	'nvim-telescope/telescope-dap.nvim',
+	'folke/neodev.nvim',
+	-- toggle term
+	 {'akinsho/toggleterm.nvim', version = "*", config = true}
+
 }
 require("lazy").setup(plugins, opts)
