@@ -1,7 +1,4 @@
 return {
   -- colorizer
-  {
-    "NvChad/nvim-colorizer.lua",
-    event = "veryLazy",
-  },
+  { "NvChad/nvim-colorizer.lua" },
 }
