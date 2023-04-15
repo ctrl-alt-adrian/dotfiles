@@ -1,5 +1,6 @@
 return {
   "theprimeagen/harpoon",
+  event = "VeryLazy",
   keys = {
     {
       "<leader>a",
