@@ -65,9 +65,6 @@ local plugins = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons", -- optional dependency
     },
-    opts = {
-      -- configurations go here
-    },
   },
   {
     "zbirenbaum/copilot.lua",
