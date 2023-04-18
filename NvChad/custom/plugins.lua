@@ -17,6 +17,7 @@ local plugins = {
   { "nvim-tree/nvim-tree.lua", opts = overrides.nvimtree},
   { "nvim-treesitter/nvim-treesitter", opts = overrides.treesitter},
   { "williamboman/mason.nvim", opts = overrides.mason},
+  { 'nvim-treesitter/playground', lazy = false},
   {
     "rust-lang/rust.vim",
     ft = "rust",
@@ -77,7 +78,7 @@ local plugins = {
   },
   {
     "f-person/git-blame.nvim",
-    lasy = false,
+    lazy = false,
   },
   {
     "codota/tabnine-nvim",
@@ -116,8 +117,34 @@ local plugins = {
 
   },
   { 'mbbill/undotree', lazy = false },
-
-
+  {
+    'nvim-neotest/neotest',
+    lazy = false,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-go",
+      'haydenmeade/neotest-jest',
+      "nvim-neotest/neotest-python",
+      "rouge8/neotest-rust",
+    },
+    opts = function()
+      return require "custom.configs.neotest"
+    end,
+    config = function(_, opts)
+     require("neotest").setup(opts)
+    end
+  },
+  {
+    "folke/neodev.nvim",
+    opts = function()
+      return require "custom.configs.neodev"
+    end,
+    config = function(_, opts)
+      require("neodev").setup(opts)
+    end,
+  }
 }
 
 return plugins
