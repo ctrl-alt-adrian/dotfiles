@@ -129,11 +129,12 @@ local plugins = {
       "nvim-neotest/neotest-python",
       "rouge8/neotest-rust",
     },
-    opts = function()
-      return require "custom.configs.neotest"
-    end,
-    config = function(_, opts)
-     require("neotest").setup(opts)
+    config = function()
+     require("neotest").setup({
+       adapters = {
+          require("neotest-jest").setup(),
+        },
+      })
     end
   },
   {

@@ -105,4 +105,50 @@ M.undotree = {
   }
 }
 
+M.neotest = {
+  n = {
+    ["<leader>ta"] = {
+      function()
+        require("neotest").run.attach()
+      end,
+      "Neotest Attach"
+    },
+    ["<leader>tr"] = {
+      function()
+        require("neotest").run.run()
+      end,
+      "Neotest Nearest"
+    },
+    ["<leader>tl"] = {
+      function()
+        require("neotest").run_last()
+      end,
+      "Neotest Run Last"
+    },
+    ["<leader>tf"] = {
+      function()
+        require("neotest").run(vim.fn.expand('%'))
+      end,
+      "Neotest Run File"
+    },
+    ["<leader>to"] = {
+      function()
+        require("neotest").output.open()
+      end,
+      "Neotest Output"
+    },
+    ["<leader>tq"] = {
+      function()
+        require("neotest").run.stop()
+      end,
+      "Neotest Stop"
+    },
+    ["<leader>ts"] = {
+      function()
+        require("neotest").summary.toggle()
+      end,
+      "Neotest Summary"
+    },
+  }
+}
 return M
