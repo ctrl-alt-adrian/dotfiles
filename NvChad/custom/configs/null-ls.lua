@@ -7,7 +7,7 @@ local sources = {
    format.stylua,
    lint.shellcheck,
   -- webdev
-  format.prettier.with { filetypes = {"html", "markdown", "css"}},
+  format.prettier.with { filetypes = {"html", "markdown", "css", "typescript", "tsx", "javascript"}},
   --cpp
   format.clang_format,
 }
