@@ -1,5 +1,6 @@
 -- override custom configs
 local M = {}
+local wk = require("which-key")
 
 M.treesitter = {
   ensure_installed = {
@@ -63,5 +64,31 @@ M.mason = {
 
 
   }
+}
+
+  M.whichkey = {
+  wk.register({
+      ["<leader>c"] = {
+      name = "Code"
+    },
+      ["<leader>d"] = {
+        name = "Dap"
+      },
+      ["<leader>f"] = {
+        name = "Find"
+      },
+      ["<leader>g"] = {
+        name = "Git"
+      },
+      ["<leader>l"] = {
+        name = "LSP"
+      },
+      ["<leader>s"] = {
+        name = "Spectre"
+      },
+      ["<leader>t"] = {
+      name = "Neotest"
+      }
+    })
 }
 return M
