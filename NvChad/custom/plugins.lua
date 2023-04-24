@@ -119,20 +119,14 @@ local plugins = {
   { 'mbbill/undotree', lazy = false },
   {
     'nvim-neotest/neotest',
-    ft = { "rust", "typescript", "javascript", "vue", "tsx", "lua" },
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-go",
       'haydenmeade/neotest-jest',
       "rouge8/neotest-rust",
     },
-    opts = function()
-      return require "custom.configs.neotest"
-    end,
-    config = function(_, opts)
-     require("neotest").setup(opts)
+    config = function()
+     require "custom.configs.neotest"
     end
   },
   {
