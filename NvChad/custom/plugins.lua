@@ -137,7 +137,28 @@ local plugins = {
     config = function(_, opts)
       require("neodev").setup(opts)
     end,
-  }
+  },
+ {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      extensions_list = { "themes", "terms", "fzf" },
+      extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
+        },
+      },
+    },
+    -- fastest sorter
+    dependencies = {
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
+    },
+  },
 }
 
 return plugins
