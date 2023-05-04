@@ -60,7 +60,7 @@ local plugins = {
   {
     "utilyre/barbecue.nvim",
     name = "barbecue",
-    lazy = false,
+    ft = {"c", "cpp", "js","ts", "jsx", "style", "sass", "scss", "vue","json", "go", "spec", "rust", "toml"},
     version = "*",
     dependencies = {
       "SmiteshP/nvim-navic",
