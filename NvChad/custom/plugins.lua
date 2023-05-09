@@ -4,8 +4,9 @@ local plugins = {
     "neovim/nvim-lspconfig",
     dependencies = {
      "jose-elias-alvarez/null-ls.nvim",
-     config = function()
-       require "custom.configs.null-ls"
+     ft = "go, lua",
+     opts = function()
+       return require "custom.configs.null-ls"
      end,
    },
     config = function()
@@ -56,11 +57,34 @@ local plugins = {
   },
   {
     "mfussenegger/nvim-dap",
+    init = function()
+      require("core.utils").load_mappings("dap")
+    end
+  },
+  {
+    "dreamsofcode-io/nvim-dap-go",
+    ft = "go",
+    dependencies = "mfussenegger/nvim-dap",
+    config = function(_, opts)
+      require("dap-go").seutp(opts)
+      require("core.utils").load_mappings("dap_go")
+    end
+  },
+  {
+    "olexsmir/gopher.nvim",
+    ft = "go",
+    config = function(_, opts)
+      require("gopher").setup(opts)
+      require("core.utils").load_mappings("gopher")
+    end,
+    build = function()
+      vim.cmd [[silent! GoInstallDeps]]
+    end,
   },
   {
     "utilyre/barbecue.nvim",
     name = "barbecue",
-    ft = {"c", "cpp", "js","ts", "jsx", "style", "sass", "scss", "vue","json", "go", "spec", "rust", "toml"},
+    ft = {"c", "cpp", "js","lua", "ts", "jsx", "style", "sass", "scss", "vue","json", "go", "spec", "rust", "toml"},
     version = "*",
     dependencies = {
       "SmiteshP/nvim-navic",

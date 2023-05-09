@@ -18,6 +18,36 @@ M.dap = {
   }
 }
 
+M.dap_go = {
+  n = {
+    ["<leader>dgt"] = {
+      function()
+        require('dap-go').debug_test()
+      end,
+      "Debug go test"
+    },
+    ["<leader>dgl"] = {
+      function()
+        require('dap-go').debug_last()
+      end,
+      "Debug last go test"
+    }
+  }
+}
+
+M.gopher = {
+  n = {
+    ["<leader>gsj"] = {
+      "<cmd> GoTagAdd json <CR>",
+      "Add json struct tags"
+    },
+    ["<leader>gsy"] = {
+      "<cmd> GoTagAdd yaml <CR>",
+      "Add yaml struct tags"
+    }
+  }
+}
+
 M.crates = {
   n = {
     ["<leader>rcu"] = {
