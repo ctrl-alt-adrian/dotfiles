@@ -25,6 +25,23 @@ for _, lsp in ipairs(servers) do
   })
 end
 
+-- golang config
+lspconfig.gopls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "gopls" },
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+  settings = {
+    gopls = {
+      completeUnimported = true,
+      usePlaceholders = true,
+      analyses = {
+        unusedparams = true,
+      },
+    },
+  },
+})
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
@@ -43,23 +60,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, opts)
   end,
 })
-
--- golang config
-lspconfig.gopls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
-  root_dir = util.root_pattern("go.work", "go.mod", ".git"),
-  settings = {
-    gopls = {
-      completeUnimported = true,
-      usePlaceholders = true,
-      analyses = {
-        unusedparams = true,
-      },
-    },
-  },
-})
-
--- typescript cofig
