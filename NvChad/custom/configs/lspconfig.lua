@@ -6,14 +6,9 @@ local util = require("lspconfig/util")
 local servers = {
 	"html",
 	"cssls",
-	"clangd",
 	"volar",
 	"gopls",
-	"svelte",
 	"tsserver",
-	"eslint",
-	"emmet_ls",
-	"pyright",
 	"jsonls",
 }
 
@@ -41,6 +36,12 @@ lspconfig.gopls.setup({
 		},
 	},
 })
+
+-- ts, js, vue, etc.. using volar
+lspconfig.volar.setup({
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)

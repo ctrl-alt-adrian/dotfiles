@@ -180,4 +180,26 @@ M.neotest = {
 		},
 	},
 }
+
+M.glance = {
+	n = {
+		["gR"] = {
+			"<cmd> Glance references<CR>",
+			"Glance references",
+		},
+		["gD"] = {
+			"<cmd> Glance definitions<CR>",
+			"Glance definitions",
+		},
+		["gY"] = {
+			"<cmd> Glance type_definitions<CR>",
+			"Glance type definitions",
+		},
+		["gM"] = {
+			"<cmd> Glance implementations<CR>",
+			"Glance implementations",
+		},
+	},
+}
+
 return M

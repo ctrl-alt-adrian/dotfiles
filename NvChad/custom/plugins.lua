@@ -111,13 +111,8 @@ local plugins = {
 		end,
 	},
 	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		lazy = false,
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup()
-		end,
+		"kkoomen/vim-doge",
+		run = ":call doge#install()",
 	},
 	{
 		"f-person/git-blame.nvim",
@@ -234,6 +229,18 @@ local plugins = {
 		"m4xshen/hardtime.nvim",
 		event = "VeryLazy",
 		opts = {},
+	},
+	{
+		"dnlhc/glance.nvim",
+		cmd = "Glance",
+		config = function()
+			require("custom.configs.glance")
+		end,
+	},
+	{
+		"neoclide/coc.nvim",
+		branch = "release",
+		event = "VeryLazy",
 	},
 }
 
