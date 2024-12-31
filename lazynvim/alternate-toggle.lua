@@ -1,3 +1,0 @@
-return {
-  { "rmagatti/alternate-toggler" },
-}
