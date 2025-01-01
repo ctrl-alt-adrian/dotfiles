@@ -145,3 +145,5 @@ fastlane/screenshots
 
 # neovim ignores
 ~/.config/nvim/plugged
+# because... reasons!
+~/Developer/dotfiles/fish/.config/fish/supersecretcommands.fish
