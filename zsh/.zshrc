@@ -180,6 +180,7 @@ export PATH="/home/linuxbrew/.linuxbrew/opt/qt@5/bin:$PATH"
 eval $(thefuck --alias)
 
 # starship
+export PATH="$HOME/.local/bin:$PATH"
 eval "$(starship init zsh)"
 
 # pnpm
@@ -189,3 +190,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+

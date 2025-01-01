@@ -1,8 +1,8 @@
 # -- UI
 # fonts
-font-family = TX-02-Trial
-# font-family = SFMono Nerd Font 
-font-size = 12
+# font-family = TX-02-Trial
+font-family = SFMono Nerd Font 
+font-size = 16
 theme = Atom
 cursor-style = block
 adjust-cell-height = 35%
@@ -17,7 +17,7 @@ window-colorspace = "display-p3"
 background = 1C2021
 foreground = ffffff
 
-shell-integration = detect
+shell-integration = zsh
 shell-integration-features = cursor, no-sudo, title
 
 clipboard-read = allow
