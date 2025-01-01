@@ -62,7 +62,7 @@ end
 
 # gnu stow
 function stowdir --description "Stows specified directory"
-    stow -t ~ */$argv
+    stow -t ~ */
 end
 function stowunlink --description "Removes symlink using gnu stow for a given directory"
     stow -D $argv
