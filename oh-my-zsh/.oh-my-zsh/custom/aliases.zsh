@@ -117,3 +117,7 @@ alias cht="cht"
 function cht() {
   curl cheat.sh/$1
 }
+
+# gnu stow
+alias stowdir="stow -t ~ */"
+alias stowunlink="stow -D"
