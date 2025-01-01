@@ -8,6 +8,8 @@ if status is-interactive
     set TERM xterm-256color
     # aliases
     source ~/.config/fish/aliases.fish
+    source ~/.config/fish/git.fish
+    source ~/.config/fish/tmux.fish
     # soon
     # source ~/.config/fish/supersecretcommands.fish
     # zoxide
