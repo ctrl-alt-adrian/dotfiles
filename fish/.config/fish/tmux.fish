@@ -2,7 +2,7 @@ function tmx --description "Start Tmux"
     tmux
 end
 function tm --description "Tmux New Session"
-    tmux new -s
+    tmux new -s $argv
 end
 function tlist --description "Tmux Session List"
     tmux ls
