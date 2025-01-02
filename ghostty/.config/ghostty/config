@@ -1,8 +1,8 @@
 # -- UI
 # fonts
-# font-family = TX-02-Trial
-font-family = SFMono Nerd Font 
-font-size = 12
+# font-family = SFMono Nerd Font 
+font-family = JetBrains Mono 
+font-size = 13
 theme = Atom
 cursor-style = block
 adjust-cell-height = 35%
