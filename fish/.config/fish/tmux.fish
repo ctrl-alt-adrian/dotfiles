@@ -1,3 +1,6 @@
+function tmx --description "Start Tmux"
+    tmux
+end
 function tm --description "Tmux New Session"
     tmux new -s
 end
