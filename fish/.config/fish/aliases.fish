@@ -20,6 +20,9 @@ end
 function dot --description "Go to dotfiles"
     ~/Developer/dotfiles/
 end
+function gitclones --description "Go to gitclones dir"
+    ~/Developer/gitclones/
+end
 function dev --description "Go to dev dir"
     ~/Developer/
 end
