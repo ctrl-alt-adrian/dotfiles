@@ -26,6 +26,12 @@ end
 function dev --description "Go to dev dir"
     ~/Developer/
 end
+function documents --description "Go to Documents dir"
+    ~/Documents/
+end
+function downloads --description "Go to Downloads dir"
+    ~/Downloads/
+end
 
 ### projects
 function projects --description "Go to projects dir"
