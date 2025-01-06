@@ -16,6 +16,7 @@ return {
     })
     local dap = require("dap")
 
+    -- setup the adapter
     dap.adapters["pwa-node"] = {
       type = "server",
       host = "localhost",
@@ -27,9 +28,25 @@ return {
           vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
           "${port}",
         },
-        -- command = "js-debug-adapter",
-        -- args = { "${port}" },
       },
+    }
+    -- TODO: figure out how to get debugging client side with chrome working
+    dap.adapters["pwa-chrome"] = {
+      type = "server",
+      command = "node",
+      port = "${port}", --let both ports be the same for now...
+      args = {
+        os.getenv("HOME") .. "/Developer/gitclones/vscode-js-debug/out/src/vsDebugServer.js",
+        "${port}",
+      },
+    }
+    -- this adapter uses VSCode Chrome debugger since VSCode JS Debugger is not DAP compliant
+    dap.adapters.chrome = {
+      -- executable: launch the remote debug adapter - server: connect to an already running debug adapter
+      type = "executable",
+      -- command to launch the debug adapter - used only on executable type
+      command = "node",
+      args = { os.getenv("HOME") .. "/Developer/gitclones/vscode-chrome-debug/out/src/chromeDebug.js" },
     }
 
     for _, language in ipairs({ "typescript", "javascript", "vue", "svelte" }) do
@@ -59,6 +76,64 @@ return {
             "${workspaceFolder}/**",
             "!**/node_modules/**",
           },
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to existing Debug session",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+          sourceMaps = true,
+        },
+        -- Debug web applications (client side)
+        {
+          type = "chrome",
+          request = "attach",
+          name = "Launch & Debug Chrome",
+          url = function()
+            local co = coroutine.running()
+            return coroutine.create(function()
+              vim.ui.input({
+                prompt = "Enter URL: ",
+                default = "http://localhost:3000",
+              }, function(url)
+                if url == nil or url == "" then
+                  return
+                else
+                  coroutine.resume(co, url)
+                end
+              end)
+            end)
+          end,
+          webRoot = "${workspaceFolder}",
+          slipFiles = { "<node_internals>/* */.js" },
+          protocol = "inspector",
+          sourceMaps = true,
+          userDataDir = false,
+        },
+
+        -- Divider for the launch.json derived configs
+        {
+          name = "----- ↓ launch.json configs ↓ -----",
+          type = "",
+          request = "launch",
+        },
+      }
+
+      --- golang
+      dap.adapters.go = {
+        type = "executable",
+        command = "node",
+        args = { os.getenv("HOME") .. "/Developer/gitclones/vscode-go/extension/dist/debugAdapter.js" },
+      }
+      dap.configurations.go = {
+        {
+          type = "go",
+          name = "Debug",
+          request = "launch",
+          showLog = false,
+          program = "${file}",
+          dlvToolPath = vim.fn.exepath("dlv"), -- Adjust to where delve is installed
         },
       }
     end
