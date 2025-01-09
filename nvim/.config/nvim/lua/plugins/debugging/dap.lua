@@ -4,6 +4,15 @@ return {
     "rcarriga/nvim-dap-ui",
     "nvim-treesitter/nvim-treesitter",
     "theHamsta/nvim-dap-virtual-text",
+    {
+      "mxsdev/nvim-dap-vscode-js",
+      tag = "v1.1.0",
+    },
+    {
+      "microsoft/vscode-js-debug",
+      tag = "v1.74.1",
+      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+    },
   },
 
   config = function()
