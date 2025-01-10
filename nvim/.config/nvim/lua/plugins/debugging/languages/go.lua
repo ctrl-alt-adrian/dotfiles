@@ -8,12 +8,25 @@
 
 local dap = require("dap")
 
--- setup adapters
-dap.adapters.go = {
-  type = "executable",
-  command = "node",
-  args = { os.getenv("HOME") .. "/Developer/gitclones/vscode-go/extension/dist/debugAdapter.js" },
-}
+dap.adapters.delve = function(callback, config)
+  if config.type == "remote" and config.request == "attach" then
+    callback({
+      type = "server",
+      host = "127.0.0.1",
+      port = "port",
+    })
+  else
+    callback({
+      type = "server",
+      port = "${port}",
+      executable = {
+        command = "dlv",
+        args = { "dap", "-l", "127.0.0.1:${port}", "--log", "--log-output=dap" },
+        detatched = vim.fn.has("win32") == 0,
+      },
+    })
+  end
+end
 -- define lanage config
 dap.configurations.go = {
   {
@@ -23,5 +36,27 @@ dap.configurations.go = {
     showLog = false,
     program = "${file}",
     dlvToolPath = os.getenv("HOME") .. "/.local/share/mise/installs/go/1.23.4/bin/dlv", -- Adjust to where delve is installed
+  },
+  {
+    type = "go",
+    name = "Debug (Build Flags)",
+    request = "launch",
+    program = "${file}",
+    buildFlags = require("dap-go").get_build_flags,
+  },
+  {
+    type = "go",
+    name = "Debug (Build Flags & Arguments)",
+    request = "launch",
+    program = "${file}",
+    args = require("dap-go").get_arguments,
+    buildFlags = require("dap-go").get_build_flags,
+  },
+  --- headless mode
+  {
+    type = "go",
+    name = "Attach remote",
+    mode = "remote",
+    request = "attach",
   },
 }

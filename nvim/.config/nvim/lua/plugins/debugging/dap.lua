@@ -13,6 +13,7 @@ return {
       tag = "v1.74.1",
       build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
     },
+    "leoluz/nvim-dap-go",
   },
 
   config = function()
