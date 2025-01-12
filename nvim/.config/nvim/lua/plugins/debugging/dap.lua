@@ -23,6 +23,7 @@ return {
     require("plugins.debugging.languages.python")
     require("plugins.debugging.languages.typescript")
 
+    vim.g.dap_virtual_trext = true
     -- load mason-nvim-dap here, after all adapters have been setup
     if LazyVim.has("mason-nvim-dap.nvim") then
       require("mason-nvim-dap").setup(LazyVim.opts("mason-nvim-dap.nvim"))

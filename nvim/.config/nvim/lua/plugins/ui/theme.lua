@@ -16,7 +16,8 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "onedark",
+      -- colorscheme = "base16-colorscheme",
+      -- colorscheme = "onedark",
     },
     -- { "loctvl842/monokai-pro.nvim" },
     -- name = "monokai-pro",
