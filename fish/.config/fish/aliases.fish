@@ -33,6 +33,9 @@ function downloads --description "Go to Downloads dir"
     ~/Downloads/
 end
 
+function oo --description "Go to Downloads dir"
+    ~/Documents/Adrian\'s\ Brain/
+end
 ### projects
 function projects --description "Go to projects dir"
     ~/Developer/Projects/
