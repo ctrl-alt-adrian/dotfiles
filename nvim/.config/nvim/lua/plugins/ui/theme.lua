@@ -13,21 +13,21 @@ return {
   --     lualine = { transparent = true },
   --   },
   -- },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "base16-colorscheme",
-      -- colorscheme = "onedark",
-    },
-    -- { "loctvl842/monokai-pro.nvim" },
-    -- name = "monokai-pro",
-    -- opts = {
-    --   transparent_background = true,
-    --   integrations = {
-    --     notify = true,
-    --     mini = true,
-    --   },
-    --   colorscheme = "monokai-pro",
-    -- },
-  },
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     colorscheme = "base16-colorscheme",
+  --     -- colorscheme = "onedark",
+  --   },
+  --   -- { "loctvl842/monokai-pro.nvim" },
+  --   -- name = "monokai-pro",
+  --   -- opts = {
+  --   --   transparent_background = true,
+  --   --   integrations = {
+  --   --     notify = true,
+  --   --     mini = true,
+  --   --   },
+  --   --   colorscheme = "monokai-pro",
+  --   -- },
+  -- },
 }
