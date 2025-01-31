@@ -1,6 +1,7 @@
 return {
   -- subdir = {"coding", "debugging", "git", "languages", "lsp", "terminal", "testing", "ui", "utils"}
 
+  { import = "plugins.ai" },
   { import = "plugins.coding" },
   { import = "plugins.debugging" },
   { import = "plugins.git" },
