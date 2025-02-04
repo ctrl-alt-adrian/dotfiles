@@ -9,6 +9,7 @@ if status is-interactive
     # aliases
     source ~/.config/fish/aliases.fish
     source ~/.config/fish/git.fish
+    source ~/.config/fish/ollama.fish
     source ~/.config/fish/tmux.fish
     # soon
     # source ~/.config/fish/supersecretcommands.fish
