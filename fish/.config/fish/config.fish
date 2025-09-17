@@ -8,6 +8,8 @@ if status is-interactive
     set TERM xterm-256color
     # aliases
     source ~/.config/fish/aliases.fish
+    source ~/.config/fish/arch.fish
+    source ~/.config/fish/docker.fish
     source ~/.config/fish/git.fish
     source ~/.config/fish/ollama.fish
     source ~/.config/fish/tmux.fish
@@ -24,7 +26,8 @@ if status is-interactive
     export PATH="$GOPATH/bin:$PATH"
     # aws
     export AWS_SDK_LOAD_CONFIG=true
-
+    # python
+    pyenv init - fish | source
     fish_add_path "/home/linuxbrew/.linuxbrew/opt/qt@5/bin:$PATH"
     # Fish syntax highlighting
     set -g fish_color_autosuggestion 555 brblack
@@ -51,4 +54,10 @@ if status is-interactive
     fzf --fish | source
 end
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-mise activate fish | source
+# mise activate fish | source
+
+# Added by `rbenv init` on Tue Feb  4 11:32:33 PM CST 2025
+status --is-interactive; and rbenv init - --no-rehash fish | source
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /home/adrian/.lmstudio/bin

@@ -232,3 +232,7 @@ function _nvm_node_info
         console.log(process.execPath)
     " | string replace -- ~ \~
 end
+
+# function nvm
+#     bass source ~/.nvm/nvm.sh -- no-use ‘;’ nvm $argv
+# end
