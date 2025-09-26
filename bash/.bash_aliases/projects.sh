@@ -1,0 +1,12 @@
+# Project-Specific Commands
+alias suyubuild='cmake .. -GNinja -DSUYU_USE_BUNDLED_VCPKG=ON -DSUYU_TESTS=OFF && ninja && sudo ninja install'
+alias suyudebug='cmake .. -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSUYU_USE_BUNDLED_VCPKG=ON -DSUYU_TESTS=OFF && ninja'
+alias ys='yarn serve'
+alias uys='nvm use && yarn serve'
+alias yt='yarn test'
+alias yl='yarn lint'
+alias pn='pnpm'
+alias npmi='rm -rf node_modules && npm i'
+alias publish='npm run publish'
+alias stowdir='stow -t ~ */'
+alias stowunlink='stow -D'
