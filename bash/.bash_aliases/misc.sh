@@ -1,6 +1,6 @@
 # Miscellaneous for Arch Linux
 alias reload='source ~/.bashrc'
-
+alias o='gio open .'
 # Fun and Productivity
 alias weather='curl http://wttr.in'
 alias cht='curl cheat.sh'

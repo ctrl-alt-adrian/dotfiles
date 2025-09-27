@@ -4,9 +4,11 @@
 alias dps='docker ps'
 alias dpsa='docker ps -a'
 alias dstop='docker stop'
-alias dstart='docker start'
+alias ds='docker start'
 alias drm='docker rm'
 alias drmf='docker rm -f'
+alias dpl="docker pull"
+alias dr="docker run"
 
 # Images
 alias dimg='docker images'
