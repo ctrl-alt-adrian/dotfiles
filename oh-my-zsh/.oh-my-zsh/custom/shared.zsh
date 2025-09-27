@@ -5,6 +5,9 @@
 # Reload ZSH configuration
 alias reload='source ~/.zshrc'
 
+# Open in file browser
+alias o="gio open ."
+
 # Navigation Shortcuts
 alias home='cd ~'
 alias dot='cd ~/Developer/dotfiles'          # Dotfiles
@@ -33,10 +36,6 @@ alias tmx='tmux'                                     # Tmux shortcut
 # Project-Specific Commands
 alias suyubuild='cmake .. -GNinja -DSUYU_USE_BUNDLED_VCPKG=ON -DSUYU_TESTS=OFF && ninja && sudo ninja install'
 alias suyudebug='cmake .. -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSUYU_USE_BUNDLED_VCPKG=ON -DSUYU_TESTS=OFF && ninja'
-alias ys='yarn serve'                                # Yarn serve
-alias uys='nvm use && yarn serve'                    # Use NVM and yarn serve
-alias yt='yarn test'                                 # Yarn test
-alias yl='yarn lint'                                 # Yarn lint
 alias pn='pnpm'                                      # PNPM shortcut
 alias stowdir='stow -t ~ */'                         # GNU Stow for dotfiles
 alias stowunlink='stow -D'                           # Unlink dotfiles
