@@ -2,14 +2,10 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
-      "nvim-neotest/neotest-jest",
-      "marilari88/neotest-vitest",
-      { "fredrikaverpil/neotest-golang", version = "*" },
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
     },
-    opts = function(_, opts)
-      table.insert(opts.adapters, require("neotest-golang"))
-      table.insert(opts.adapters, require("neotest-jest"))
-      table.insert(opts.adapters, require("neotest-vitest"))
-    end,
   },
 }
