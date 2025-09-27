@@ -1,7 +1,42 @@
 symlinkit() {
-  command -v fzf >/dev/null 2>&1 || { echo "❌ fzf not found"; return 1; }
-  command -v tree >/dev/null 2>&1 || { echo "❌ tree not found"; return 1; }
-  command -v realpath >/dev/null 2>&1 || { echo "❌ realpath not found (install coreutils)"; return 1; }
+  # --- HELP FLAG ---
+  if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    cat <<'EOF'
+symlinkit - Flexible symlink helper with fzf + dry-run support
+
+Usage:
+  symlinkit [FLAGS] [SOURCE] [DESTINATION]
+
+If SOURCE or DESTINATION are not provided, fzf will be used to pick them.
+If no mode is specified (-o / -m), and the target already exists,
+you will be prompted to choose overwrite, merge, or cancel.
+
+Flags:
+  -o                   Overwrite mode (remove existing target, replace with symlink)
+  -m                   Merge mode (recursively symlink contents into destination)
+  --dry-run            Preview actions (conflicts default to "skip")
+  --dry-run-overwrite  Preview actions (conflicts default to "overwrite")
+  --tree               Show final destination tree (requires 'tree')
+  -h, --help           Show this help message and exit
+
+Examples:
+  symlinkit -o ~/dotfiles/config ~/.config
+  symlinkit -m ~/dotfiles/scripts ~/bin
+  symlinkit --dry-run -m ~/src/project ~/deploy
+  symlinkit --dry-run-overwrite -m --tree ~/dotfiles/custom ~/.custom
+EOF
+    return 0
+  fi
+
+  # --- REQUIREMENTS ---
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "❌ Fzf not found. Ensure it's in PATH or install it: sudo pacman -S fzf"
+    return 1
+  fi
+  if ! command -v realpath >/dev/null 2>&1; then
+    echo "❌ realpath not found. Ensure it's in PATH or install coreutils."
+    return 1
+  fi
 
   GREEN="\033[0;32m"
   RED="\033[0;31m"
@@ -11,6 +46,7 @@ symlinkit() {
   dry_run=false
   dry_run_overwrite=false
   mode=""
+  show_tree=false
 
   linked=0
   overwritten=0
@@ -21,6 +57,7 @@ symlinkit() {
     case "$1" in
       --dry-run) dry_run=true ;;
       --dry-run-overwrite) dry_run=true; dry_run_overwrite=true ;;
+      --tree) show_tree=true ;;
       -o) mode="overwrite" ;;
       -m) mode="merge" ;;
       *) echo "❌ Unknown flag: $1"; return 1 ;;
@@ -74,10 +111,10 @@ symlinkit() {
   if [[ "$mode" == "overwrite" ]]; then
     $dry_run || { rm -rf -- "$target"; ln -s -- "$src" "$target"; }
     if $dry_run; then
-      echo -e "${RED}🔄 Would overwrite symlink:${RESET} $target → $src"
+      echo "${RED}🔄 Would overwrite symlink:${RESET} $target → $src"
       ((overwritten++))
     else
-      echo -e "${RED}🔄 Overwritten symlink:${RESET} $target → $src"
+      echo "${RED}🔄 Overwritten symlink:${RESET} $target → $src"
     fi
   fi
 
@@ -96,24 +133,24 @@ symlinkit() {
         if [[ -e "$dest_item" || -L "$dest_item" ]]; then
           if [[ "$overwrite_all" == true ]]; then
             $dry_run || { rm -rf -- "$dest_item"; ln -s -- "$item" "$dest_item"; }
-            echo -e "${RED}🔄 Overwritten:${RESET} $dest_item"
+            echo "${RED}🔄 Overwritten:${RESET} $dest_item"
             ((overwritten++))
           else
             if $dry_run; then
               if $dry_run_overwrite; then
-                echo -e "${RED}🔄 Would overwrite:${RESET} $dest_item"
+                echo "${RED}🔄 Would overwrite:${RESET} $dest_item"
                 ((overwritten++))
               else
-                echo -e "${YELLOW}⏭️ Would skip:${RESET} $dest_item"
+                echo "${YELLOW}⏭️ Would skip:${RESET} $dest_item"
                 ((skipped++))
               fi
             else
               printf "⚠️  Conflict: %s exists.\n[s]kip / [o]verwrite / [a]ll overwrite / [c]ancel > " "$dest_item"
               read -n1 action; echo
               case "$action" in
-                s|S) echo -e "${YELLOW}⏭️ Skipped:${RESET} $dest_item"; ((skipped++)) ;;
-                o|O) rm -rf -- "$dest_item"; ln -s -- "$item" "$dest_item"; echo -e "${RED}🔄 Overwritten:${RESET} $dest_item"; ((overwritten++)) ;;
-                a|A) overwrite_all=true; rm -rf -- "$dest_item"; ln -s -- "$item" "$dest_item"; echo -e "${RED}🔄 Overwritten (all):${RESET} $dest_item"; ((overwritten++)) ;;
+                s|S) echo "${YELLOW}⏭️ Skipped:${RESET} $dest_item"; ((skipped++)) ;;
+                o|O) rm -rf -- "$dest_item"; ln -s -- "$item" "$dest_item"; echo "${RED}🔄 Overwritten:${RESET} $dest_item"; ((overwritten++)) ;;
+                a|A) overwrite_all=true; rm -rf -- "$dest_item"; ln -s -- "$item" "$dest_item"; echo "${RED}🔄 Overwritten (all):${RESET} $dest_item"; ((overwritten++)) ;;
                 *) echo "❌ Cancelled."; return 1 ;;
               esac
             fi
@@ -121,22 +158,27 @@ symlinkit() {
         else
           $dry_run || ln -s -- "$item" "$dest_item"
           if $dry_run; then
-            echo -e "${GREEN}✅ Would link:${RESET} $dest_item"
+            echo "${GREEN}✅ Would link:${RESET} $dest_item"
             ((linked++))
           else
-            echo -e "${GREEN}✅ Linked:${RESET} $dest_item"
+            echo "${GREEN}✅ Linked:${RESET} $dest_item"
           fi
         fi
       fi
     done
   fi
 
-  echo "📂 Destination listing:"
+  # --- End output ---
   if $dry_run; then
-    echo -e "(${YELLOW}Dry run:${RESET} no changes applied)"
-    echo -e "📊 Summary: ${GREEN}$linked would link${RESET}, ${RED}$overwritten would overwrite${RESET}, ${YELLOW}$skipped would skip${RESET}"
-  else
-    tree -fp "$dest"
+    echo "(${YELLOW}Dry run:${RESET} no changes applied)"
+    echo "📊 Summary: ${GREEN}$linked would link${RESET}, ${RED}$overwritten would overwrite${RESET}, ${YELLOW}$skipped would skip${RESET}"
+  elif $show_tree; then
+    if command -v tree >/dev/null 2>&1; then
+      echo "📂 Destination listing:"
+      tree -fp "$dest"
+    else
+      echo "❌ Tree not found. Ensure it's in PATH or install it: sudo pacman -S tree"
+    fi
   fi
 }
 
