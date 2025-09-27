@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+SCRIPT="$HOME/.config/hypr/set-wallpapers.sh"
+DEFAULT_DIR="$HOME/Pictures/wallpapers"
+
+case "$1" in
+  --rand|--random)
+    shift
+    DIR="${1:-$DEFAULT_DIR}"
+    exec "$SCRIPT" --rand "$DIR"
+    ;;
+  --dp1)
+    shift
+    exec "$SCRIPT" --dp1 "$@"
+    ;;
+  --dp2)
+    shift
+    exec "$SCRIPT" --dp2 "$@"
+    ;;
+  "")
+    exec "$SCRIPT"
+    ;;
+  *)
+    if [[ $# -eq 2 ]]; then
+      exec "$SCRIPT" "$1" "$2"
+    else
+      echo "Usage:"
+      echo "  wset --rand [folder]        Random wallpapers (default: $DEFAULT_DIR)"
+      echo "  wset --dp1 <file>           Set DP-1 only"
+      echo "  wset --dp2 <file>           Set DP-2 only"
+      echo "  wset <file1> <file2>        Set both monitors explicitly"
+      echo "  wset                        Reload last saved pair"
+      exit 1
+    fi
+    ;;
+esac
+
