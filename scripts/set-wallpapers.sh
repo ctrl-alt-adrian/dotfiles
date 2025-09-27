@@ -1,29 +1,39 @@
 #!/usr/bin/env bash
-
-# Usage:
-#   set-wallpapers.sh --rand [folder]
-#   set-wallpapers.sh /path/to/wall1 /path/to/wall2
-#   set-wallpapers.sh --dp1 /path/to/wall
-#   set-wallpapers.sh --dp2 /path/to/wall
-#   set-wallpapers.sh   (reload last used)
+#
+# set-wallpapers.sh
+#
+# 📌 Purpose:
+#   Manage wallpapers per monitor in Hyprland using `swww`.
+#   Supports random selection (per monitor or both), recursion depth,
+#   per-monitor setting, and reloading the last used wallpapers.
+#
+# 🔑 Usage:
+#   set-wallpapers.sh --rand [folder] [--depth N]
+#   set-wallpapers.sh --dp1 <file|--rand [folder] [--depth N]>
+#   set-wallpapers.sh --dp2 <file|--rand [folder] [--depth N]>
+#   set-wallpapers.sh <file1> <file2>
+#   set-wallpapers.sh               # reload last saved
+#
+# ⚙️ Options:
+#   --rand [folder]    Random wallpapers (default: ~/Pictures/wallpapers)
+#   --depth N          Limit recursion depth for random mode (default: unlimited)
+#   --dp1              Target DP-1 only
+#   --dp2              Target DP-2 only
+#   -h | --help        Show this help message
+#
+# 💡 Notes:
+#   • State is saved to ~/.config/hypr/.last_wallpapers
+#   • Requires `swww` and (optionally) `notify-send`
 
 STATE_FILE="$HOME/.config/hypr/.last_wallpapers"
 DEFAULT_DIR="$HOME/Pictures/wallpapers"
 
-# Monitors (adjust if names change)
 MONITOR_DP2="DP-2"
 MONITOR_DP1="DP-1"
 
-# --- ensure notify-send is available (Arch) ---
-ensure_notify() {
-  if command -v notify-send >/dev/null 2>&1; then
-    return 0
-  fi
-  if command -v pacman >/dev/null 2>&1; then
-    echo "ℹ️  'notify-send' not found. Install with: sudo pacman -S libnotify"
-  fi
+show_help() {
+  sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
 }
-ensure_notify
 
 notify() {
   local msg="$1"
@@ -33,7 +43,7 @@ notify() {
   echo "$msg"
 }
 
-# Start daemon if not already running (suppress WARNs)
+# start daemon if not already running
 pgrep -x swww-daemon >/dev/null || swww-daemon --no-cache 2> >(grep -v "WARN" >&2) &
 sleep 1
 
@@ -74,64 +84,100 @@ reload_last() {
   fi
 }
 
-# --- Main logic ---
+pick_random_image() {
+  local folder="$1"
+  local depth_arg="$2"
 
-if [[ "$1" == "--random" || "$1" == "--rand" ]]; then
-  WALLPAPER_DIR="${2:-$DEFAULT_DIR}"
+  mapfile -t CANDIDATES < <(find "$folder" $depth_arg -type f \
+    \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) 2>/dev/null)
 
-  if [[ ! -d "$WALLPAPER_DIR" ]]; then
-    notify "❌ Wallpaper directory does not exist: $WALLPAPER_DIR"
-    exit 1
-  fi
+  [[ ${#CANDIDATES[@]} -eq 0 ]] && { notify "❌ No images found in $folder"; exit 1; }
 
-  mapfile -t IMAGES < <(find "$WALLPAPER_DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \))
-  if [[ ${#IMAGES[@]} -lt 2 ]]; then
-    notify "⚠️  Not enough images in $WALLPAPER_DIR. Reloading last..."
-    reload_last
+  shuf -e "${CANDIDATES[@]}" -n 1
+}
+
+# --- main logic ---
+
+case "$1" in
+  -h|--help)
+    show_help
     exit 0
-  fi
+    ;;
 
-  WALL_DP2=$(shuf -e "${IMAGES[@]}" -n 1)
-  WALL_DP1=$(shuf -e "${IMAGES[@]}" -n 1)
-  while [[ "$WALL_DP2" == "$WALL_DP1" ]]; do
-    WALL_DP1=$(shuf -e "${IMAGES[@]}" -n 1)
-  done
+  --rand|--random)
+    shift
+    WALLPAPER_DIR="${1:-$DEFAULT_DIR}"
+    [[ -d "$WALLPAPER_DIR" ]] || { notify "❌ Directory not found: $WALLPAPER_DIR"; exit 1; }
 
-  apply_wallpaper "$WALL_DP2" "$MONITOR_DP2"
-  apply_wallpaper "$WALL_DP1" "$MONITOR_DP1"
-  save_state "$WALL_DP2" "$WALL_DP1"
-  notify "Random wallpapers applied from $(basename "$WALLPAPER_DIR")"
+    DEPTH_ARG=""
+    if [[ "$2" == "--depth" && -n "$3" ]]; then
+      DEPTH_ARG="-maxdepth $3"
+    fi
 
-elif [[ "$1" == "--dp2" && -n "$2" ]]; then
-  apply_wallpaper "$2" "$MONITOR_DP2"
-  if [[ -f "$STATE_FILE" ]]; then
-    mapfile -t LAST < "$STATE_FILE"
-    save_state "$2" "${LAST[1]}"
-  else
-    save_state "$2" ""
-  fi
+    WALL_DP2=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+    WALL_DP1=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+    while [[ "$WALL_DP2" == "$WALL_DP1" ]]; do
+      WALL_DP1=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+    done
 
-elif [[ "$1" == "--dp1" && -n "$2" ]]; then
-  apply_wallpaper "$2" "$MONITOR_DP1"
-  if [[ -f "$STATE_FILE" ]]; then
-    mapfile -t LAST < "$STATE_FILE"
-    save_state "${LAST[0]}" "$2"
-  else
-    save_state "" "$2"
-  fi
+    apply_wallpaper "$WALL_DP2" "$MONITOR_DP2"
+    apply_wallpaper "$WALL_DP1" "$MONITOR_DP1"
+    save_state "$WALL_DP2" "$WALL_DP1"
+    notify "Random wallpapers applied from $(basename "$WALLPAPER_DIR")"
+    ;;
 
-elif [[ -n "$1" && -n "$2" ]]; then
-  if [[ -f "$1" && -f "$2" ]]; then
-    apply_wallpaper "$1" "$MONITOR_DP2"
-    apply_wallpaper "$2" "$MONITOR_DP1"
-    save_state "$1" "$2"
-    notify "Set explicit wallpapers"
-  else
-    notify "❌ One or both files not found. Reloading last..."
+  --dp1)
+    shift
+    if [[ "$1" == "--rand" || "$1" == "--random" ]]; then
+      WALLPAPER_DIR="${2:-$DEFAULT_DIR}"
+      DEPTH_ARG=""
+      if [[ "$3" == "--depth" && -n "$4" ]]; then
+        DEPTH_ARG="-maxdepth $4"
+      fi
+      RAND_IMG=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+      apply_wallpaper "$RAND_IMG" "$MONITOR_DP1"
+      mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
+      save_state "${LAST[0]}" "$RAND_IMG"
+    else
+      apply_wallpaper "$1" "$MONITOR_DP1"
+      mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
+      save_state "${LAST[0]}" "$1"
+    fi
+    ;;
+
+  --dp2)
+    shift
+    if [[ "$1" == "--rand" || "$1" == "--random" ]]; then
+      WALLPAPER_DIR="${2:-$DEFAULT_DIR}"
+      DEPTH_ARG=""
+      if [[ "$3" == "--depth" && -n "$4" ]]; then
+        DEPTH_ARG="-maxdepth $4"
+      fi
+      RAND_IMG=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+      apply_wallpaper "$RAND_IMG" "$MONITOR_DP2"
+      mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
+      save_state "$RAND_IMG" "${LAST[1]}"
+    else
+      apply_wallpaper "$1" "$MONITOR_DP2"
+      mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
+      save_state "$1" "${LAST[1]}"
+    fi
+    ;;
+
+  "")
     reload_last
-  fi
+    ;;
 
-else
-  reload_last
-fi
+  *)
+    if [[ $# -eq 2 ]]; then
+      apply_wallpaper "$1" "$MONITOR_DP2"
+      apply_wallpaper "$2" "$MONITOR_DP1"
+      save_state "$1" "$2"
+      notify "Set explicit wallpapers"
+    else
+      notify "❌ Invalid usage. Try --help."
+      exit 1
+    fi
+    ;;
+esac
 
