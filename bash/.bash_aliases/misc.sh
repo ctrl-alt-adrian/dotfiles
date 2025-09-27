@@ -11,10 +11,10 @@ alias chromekill="ps aux | grep '[C]hrome Helper --type=renderer' | grep -v exte
 
 # Wallpapers
 export PATH="$HOME/.local/bin:$PATH"
-# EX
-# wall --rand ~/Pictures/wallpapers
-# wall --dp1 ~/Pictures/special.jpg
-# wall --dp2 ~/Pictures/ultrawide.png
-# wall ~/Pictures/foo.jpg ~/Pictures/bar.png
-# wall
-alias wallrand='wall --rand ~/Pictures/wallpapers'
+alias wrandc='wset --rand ~/Pictures/walls'     # custom folder
+alias wrand='wset --rand'                       # default folder
+alias w2randc='wset --dp2 --rand ~/Pictures/walls' # monitor DP-2, custom folder
+alias w2rand='wset --dp2 --rand'                  # monitor DP-2, default folder
+alias w1randc='wset --dp1 --rand ~/Pictures/walls' # monitor DP-1, custom folder
+alias w1rand='wset --dp1 --rand'                  # monitor DP-1, default folder
+
