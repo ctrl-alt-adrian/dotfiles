@@ -12,7 +12,7 @@
 #   set-wallpapers.sh --dp1 <file|--rand [folder] [--depth N]>
 #   set-wallpapers.sh --dp2 <file|--rand [folder] [--depth N]>
 #   set-wallpapers.sh <file1> <file2>
-#   set-wallpapers.sh               # reload last saved
+#   set-wallpapers.sh               # reload last saved (fallbacks to random)
 #
 # ⚙️ Options:
 #   --rand [folder]    Random wallpapers (default: ~/Pictures/wallpapers)
@@ -80,14 +80,13 @@ reload_last() {
       apply_wallpaper "${LAST[0]}" "$MONITOR_DP1"
       apply_wallpaper "${LAST[1]}" "$MONITOR_DP2"
       notify "Reloaded last wallpapers"
-    else
-      notify "❌ No valid saved wallpapers found."
-      exit 1
+      return
     fi
-  else
-    notify "❌ No saved wallpapers found. Run with --rand first."
-    exit 1
   fi
+
+  # fallback if state is missing or invalid
+  notify "⚠️ No valid saved wallpapers found. Picking random instead."
+  "$0" --rand
 }
 
 pick_random_image() {
