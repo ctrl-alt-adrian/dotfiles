@@ -19,14 +19,13 @@ alias projects='cd ~/Developer/Projects'      # Projects directory
 alias goproj='cd ~/Developer/Projects/golang' # Go projects
 alias vueproj='cd ~/Developer/Projects/vue'   # Vue projects
 alias reactproj='cd ~/Developer/Projects/react' # React projects
-alias suyu='cd ~/Developer/Projects/suyu-app' # Suyu project
-
 # Editor and Configuration
 alias vim='nvim'                             # Use Neovim as vim
 alias v='nvim'                               # Short alias for Neovim
 alias nconfig='cd ~/.config/nvim'            # Neovim config directory
 alias myzsh='cd ~/.oh-my-zsh/custom'         # ZSH custom directory
 alias dotzsh='cd ~/Developer/dotfiles/zsh'   # Dotfiles ZSH config
+alias mybash="cd ~/.bash_aliases/"           # Bash Aliases Dir
 
 # Tool Replacements
 alias ls='eza --color=always --git --icons=always --no-time' # Use eza instead of ls
@@ -54,6 +53,7 @@ alias check='nslookup'                                # DNS lookup
 alias weather='curl http://wttr.in'                  # Weather information
 alias cht='curl cheat.sh'                            # Cheat sheet lookup
 alias search='ddgr'                                  # DuckDuckGo search
+alias wsr="swww-reset"                              # Restarts swww and reloads saved wallpaper
 
 # Kill Chrome helper processes
 alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
