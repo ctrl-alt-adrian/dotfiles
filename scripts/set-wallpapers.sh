@@ -28,8 +28,11 @@
 STATE_FILE="$HOME/.config/hypr/.last_wallpapers"
 DEFAULT_DIR="$HOME/Pictures/wallpapers"
 
-MONITOR_DP2="DP-2"
 MONITOR_DP1="DP-1"
+MONITOR_DP2="DP-2"
+
+# Always respect the active Wayland namespace
+SWWW_NS="--namespace ${WAYLAND_DISPLAY:-wayland-1}"
 
 show_help() {
   sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
@@ -44,7 +47,7 @@ notify() {
 }
 
 # start daemon if not already running
-pgrep -x swww-daemon >/dev/null || swww-daemon --no-cache 2> >(grep -v "WARN" >&2) &
+pgrep -x swww-daemon >/dev/null || swww-daemon --no-cache $SWWW_NS 2> >(grep -v "WARN" >&2) &
 sleep 1
 
 apply_wallpaper() {
@@ -52,7 +55,7 @@ apply_wallpaper() {
   local monitor="$2"
 
   if [[ -f "$wall" ]]; then
-    if swww img "$wall" --outputs "$monitor" --resize crop --transition-type none 2> >(grep -v "WARN" >&2); then
+    if swww img "$wall" --outputs "$monitor" --resize crop --transition-type none $SWWW_NS 2> >(grep -v "WARN" >&2); then
       notify "✅ $monitor → $(basename "$wall")"
     else
       notify "❌ Failed to set $monitor → $(basename "$wall")"
@@ -63,16 +66,19 @@ apply_wallpaper() {
 }
 
 save_state() {
-  echo "$1" > "$STATE_FILE"
-  echo "$2" >> "$STATE_FILE"
+  # Always save in monitor order:
+  # Line 1 → DP-1
+  # Line 2 → DP-2
+  echo "$1" > "$STATE_FILE"    # DP-1 wallpaper
+  echo "$2" >> "$STATE_FILE"   # DP-2 wallpaper
 }
 
 reload_last() {
   if [[ -f "$STATE_FILE" ]]; then
     mapfile -t LAST < "$STATE_FILE"
     if [[ ${#LAST[@]} -eq 2 && -f "${LAST[0]}" && -f "${LAST[1]}" ]]; then
-      apply_wallpaper "${LAST[0]}" "$MONITOR_DP2"
-      apply_wallpaper "${LAST[1]}" "$MONITOR_DP1"
+      apply_wallpaper "${LAST[0]}" "$MONITOR_DP1"
+      apply_wallpaper "${LAST[1]}" "$MONITOR_DP2"
       notify "Reloaded last wallpapers"
     else
       notify "❌ No valid saved wallpapers found."
@@ -114,15 +120,15 @@ case "$1" in
       DEPTH_ARG="-maxdepth $3"
     fi
 
-    WALL_DP2=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
     WALL_DP1=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
-    while [[ "$WALL_DP2" == "$WALL_DP1" ]]; do
-      WALL_DP1=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+    WALL_DP2=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
+    while [[ "$WALL_DP1" == "$WALL_DP2" ]]; do
+      WALL_DP2=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
     done
 
-    apply_wallpaper "$WALL_DP2" "$MONITOR_DP2"
     apply_wallpaper "$WALL_DP1" "$MONITOR_DP1"
-    save_state "$WALL_DP2" "$WALL_DP1"
+    apply_wallpaper "$WALL_DP2" "$MONITOR_DP2"
+    save_state "$WALL_DP1" "$WALL_DP2"
     notify "Random wallpapers applied from $(basename "$WALLPAPER_DIR")"
     ;;
 
@@ -136,12 +142,13 @@ case "$1" in
       fi
       RAND_IMG=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
       apply_wallpaper "$RAND_IMG" "$MONITOR_DP1"
+
       mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
-      save_state "${LAST[0]}" "$RAND_IMG"
+      save_state "$RAND_IMG" "${LAST[1]}"
     else
       apply_wallpaper "$1" "$MONITOR_DP1"
       mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
-      save_state "${LAST[0]}" "$1"
+      save_state "$1" "${LAST[1]}"
     fi
     ;;
 
@@ -155,12 +162,13 @@ case "$1" in
       fi
       RAND_IMG=$(pick_random_image "$WALLPAPER_DIR" "$DEPTH_ARG")
       apply_wallpaper "$RAND_IMG" "$MONITOR_DP2"
+
       mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
-      save_state "$RAND_IMG" "${LAST[1]}"
+      save_state "${LAST[0]}" "$RAND_IMG"
     else
       apply_wallpaper "$1" "$MONITOR_DP2"
       mapfile -t LAST < "$STATE_FILE" 2>/dev/null || LAST=("" "")
-      save_state "$1" "${LAST[1]}"
+      save_state "${LAST[0]}" "$1"
     fi
     ;;
 
@@ -170,8 +178,8 @@ case "$1" in
 
   *)
     if [[ $# -eq 2 ]]; then
-      apply_wallpaper "$1" "$MONITOR_DP2"
-      apply_wallpaper "$2" "$MONITOR_DP1"
+      apply_wallpaper "$1" "$MONITOR_DP1"
+      apply_wallpaper "$2" "$MONITOR_DP2"
       save_state "$1" "$2"
       notify "Set explicit wallpapers"
     else
