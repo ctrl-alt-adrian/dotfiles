@@ -1,48 +1,54 @@
 #!/usr/bin/env bash
 #
-# set-wallpapers.sh
+# set-wallpapers-swww.sh
 #
 # 📌 Purpose:
-#   Manage wallpapers per monitor in Hyprland using `swaybg`.
+#   Manage wallpapers per monitor in Hyprland using `swww`.
 #
 # 🔑 Usage:
-#   set-wallpapers.sh --rand [folder] [--depth N] [--mode fill|fit|stretch|center|tile]
-#   set-wallpapers.sh --dp1 <file|--rand [folder] [--depth N]>
-#   set-wallpapers.sh --dp2 <file|--rand [folder] [--depth N]>
-#   set-wallpapers.sh <file1> <file2>
-#   set-wallpapers.sh               # reload last saved
+#   set-wallpapers-swww.sh --rand [folder] [--depth N] [--mode fill|fit|stretch|center|tile]
+#   set-wallpapers-swww.sh --dp1 <file|--rand [folder] [--depth N]>
+#   set-wallpapers-swww.sh --dp2 <file|--rand [folder] [--depth N]>
+#   set-wallpapers-swww.sh <file1> <file2>
+#   set-wallpapers-swww.sh               # reload last saved
 #
 # ⚙️ Options:
 #   --rand [folder]    Random wallpapers (default: ~/Pictures/wallpapers)
-#   --depth N          Limit recursion depth
+#   --depth N          Limit recursion depth for random mode
 #   --dp1              Target DP-1 only
 #   --dp2              Target DP-2 only
-#   --mode MODE        Resize mode (default fill). [fill, fit, stretch, center, tile]
+#   --mode MODE        Resize mode (default crop). [no, crop, fit, stretch]
 #   -h | --help        Show this help message
 #
 # 💡 Notes:
 #   • State saved in ~/.config/hypr/.last_wallpapers
-#   • Requires `swaybg`
+#   • Requires `swww` running with --namespace $WAYLAND_DISPLAY
+#
 
 STATE_FILE="$HOME/.config/hypr/.last_wallpapers"
 DEFAULT_DIR="$HOME/Pictures/wallpapers"
 MONITOR_DP1="DP-1"
 MONITOR_DP2="DP-2"
-MODE="fill"
+MODE="crop"
 
 show_help() { sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'; }
 
 notify() {
   local msg="$1"
-  command -v notify-send >/dev/null && notify-send "Wallpaper (swaybg)" "$msg"
+  command -v notify-send >/dev/null && notify-send "Wallpaper (swww)" "$msg"
   echo "$msg"
 }
+
+# Ensure daemon is running
+pgrep -x swww-daemon >/dev/null || \
+  swww-daemon --no-cache --namespace "$WAYLAND_DISPLAY" > ~/.config/hypr/swww.log 2>&1 &
+sleep 1
 
 apply_wallpaper() {
   local wall="$1" monitor="$2"
   [[ -f "$wall" ]] || { notify "❌ File not found $wall"; return 1; }
-  swaybg -o "$monitor" -i "$wall" -m "$MODE" &
-  notify "✅ $monitor → $(basename "$wall")"
+  swww img "$wall" --outputs "$monitor" --resize "$MODE" --transition-type none 2> >(grep -v "WARN" >&2) &&
+    notify "✅ $monitor → $(basename "$wall")"
 }
 
 save_state() { echo "$1" >"$STATE_FILE"; echo "$2" >>"$STATE_FILE"; }
@@ -51,7 +57,6 @@ reload_last() {
   if [[ -f "$STATE_FILE" ]]; then
     mapfile -t LAST <"$STATE_FILE"
     [[ ${#LAST[@]} -eq 2 && -f "${LAST[0]}" && -f "${LAST[1]}" ]] && {
-      pkill swaybg
       apply_wallpaper "${LAST[0]}" "$MONITOR_DP1"
       apply_wallpaper "${LAST[1]}" "$MONITOR_DP2"
       notify "Reloaded last wallpapers"
@@ -68,9 +73,8 @@ pick_random_image() {
 
 # --- main ---
 [[ "$1" == "-h" || "$1" == "--help" ]] && { show_help; exit 0; }
-[[ "$1" == "--mode" ]] && { shift; MODE="$1"; shift; }
 
-pkill swaybg
+[[ "$1" == "--mode" ]] && { shift; MODE="$1"; shift; }
 
 case "$1" in
   --rand|--random)
