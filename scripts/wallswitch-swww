@@ -1,0 +1,388 @@
+#!/usr/bin/env bash
+set -u
+#
+# wallswitch-swww - Manage per-monitor wallpapers in Hyprland using swww
+#
+# Purpose:
+#   Manage wallpapers per monitor in Hyprland using swww.
+#   Automatically detects all connected monitors and applies wallpapers.
+#
+# Usage:
+#   wallswitch-swww --rand [folder] [--depth N] [--mode MODE] [--timer N]
+#   wallswitch-swww --monitor <name> <file|--rand [folder]> [--mode MODE]
+#   wallswitch-swww                                  # reload last saved
+#
+# Options:
+#   --rand [folder]    Random wallpapers for all monitors (default: ~/Pictures/wallpapers)
+#   --monitor <name>   Set wallpaper for specific monitor (use --list-monitors to see names)
+#   --depth N          Limit recursion depth for --rand (default: unlimited)
+#   --mode MODE        swww resize mode: crop (default), fit, stretch, no
+#                      Can be used with any command
+#   --timer N          Auto-rotate random wallpapers every N seconds (use with --rand)
+#   --list             Show currently saved wallpapers
+#   --list-monitors    Show available monitor names
+#   --status           Show running status of wallpapers
+#   -h | --help        Show this help message
+#
+# Examples:
+#   wallswitch-swww --rand                          # Random wallpapers on all monitors
+#   wallswitch-swww --rand --timer 300              # Random wallpapers, change every 5 minutes
+#   wallswitch-swww --monitor DP-1 --rand           # Random wallpaper on DP-1 only
+#   wallswitch-swww --monitor DP-1 /path/image.jpg  # Set specific wallpaper on DP-1
+#   wallswitch-swww --rand --mode fit               # Random with fit mode
+#
+# Notes:
+#   State saved to ~/.config/hypr/.last_wallpapers_swww
+#   Requires hyprctl, swww, jq, and (optionally) notify-send
+
+# user config -- edit these values to match your setup
+#=================
+DEFAULT_DIR="$HOME/Pictures/wallpapers" # default wallpaper directory
+DEFAULT_MODE="crop"                     # default display mode
+ENABLE_NOTIFICATIONS=true               # set to false to disable notifications
+#=================
+STATE_FILE="$HOME/.config/hypr/.last_wallpapers_swww"
+
+show_help() {
+  sed -n '3,37p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+notify() {
+  local msg="$1"
+  if [[ "$ENABLE_NOTIFICATIONS" == true ]] && command -v notify-send >/dev/null 2>&1; then
+    notify-send "Wallpaper (swww)" "$msg"
+  fi
+  echo "$msg"
+}
+
+get_monitors() {
+  if ! command -v hyprctl >/dev/null 2>&1; then
+    notify "Error: hyprctl not found. Is Hyprland running?"
+    exit 1
+  fi
+
+  mapfile -t monitors < <(hyprctl monitors -j | jq -r '.[].name' 2>/dev/null)
+
+  if [[ ${#monitors[@]} -eq 0 ]]; then
+    notify "Error: No monitors detected"
+    exit 1
+  fi
+
+  echo "${monitors[@]}"
+}
+
+pick_random_image() {
+  local folder="$1"
+  local depth_arg="$2"
+
+  mapfile -t CANDIDATES < <(find "$folder" $depth_arg -type f \
+    \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) 2>/dev/null)
+
+  [[ ${#CANDIDATES[@]} -eq 0 ]] && {
+    notify "Error: No images found in $folder"
+    exit 1
+  }
+
+  shuf -e "${CANDIDATES[@]}" -n 1
+}
+
+load_state() {
+  local -n result=$1
+
+  if [[ ! -f "$STATE_FILE" ]]; then
+    result=()
+    return
+  fi
+
+  while IFS='|' read -r monitor wallpaper; do
+    result["$monitor"]="$wallpaper"
+  done <"$STATE_FILE"
+}
+
+save_state() {
+  local monitor="$1"
+  local wallpaper="$2"
+
+  declare -A state
+
+  if [[ -f "$STATE_FILE" ]]; then
+    while IFS='|' read -r mon wall; do
+      state["$mon"]="$wall"
+    done <"$STATE_FILE"
+  fi
+
+  state["$monitor"]="$wallpaper"
+
+  : >"$STATE_FILE"
+  for mon in "${!state[@]}"; do
+    echo "$mon|${state[$mon]}" >>"$STATE_FILE"
+  done
+}
+
+ensure_swww_daemon() {
+  if ! command -v swww >/dev/null 2>&1; then
+    notify "Error: swww not found. Please install swww."
+    exit 1
+  fi
+
+  if ! pgrep -x swww-daemon >/dev/null; then
+    notify "Starting swww daemon..."
+    swww-daemon --no-cache --namespace "$WAYLAND_DISPLAY" > ~/.config/hypr/swww.log 2>&1 &
+    sleep 1
+  fi
+}
+
+set_random_wallpapers() {
+  local wallpaper_dir="${1:-$DEFAULT_DIR}"
+  local depth_arg="${2:-}"
+
+  [[ -d "$wallpaper_dir" ]] || {
+    notify "Error: Directory not found: $wallpaper_dir"
+    exit 1
+  }
+
+  ensure_swww_daemon
+
+  local -a monitors
+  read -ra monitors <<<"$(get_monitors)"
+
+  declare -A used_wallpapers
+
+  for monitor in "${monitors[@]}"; do
+    local wallpaper
+    wallpaper=$(pick_random_image "$wallpaper_dir" "$depth_arg")
+
+    while [[ -n "${used_wallpapers[$wallpaper]:-}" ]]; do
+      wallpaper=$(pick_random_image "$wallpaper_dir" "$depth_arg")
+    done
+
+    used_wallpapers["$wallpaper"]=1
+    apply_wallpaper "$monitor" "$wallpaper" "$MODE"
+    save_state "$monitor" "$wallpaper"
+  done
+}
+
+random_wallpaper_loop() {
+  local wallpaper_dir="${1:-$DEFAULT_DIR}"
+  local depth_arg="${2:-}"
+  local timer="${3:-300}"
+
+  # Signal handler for clean exit
+  trap 'echo ""; notify "Stopping wallpaper rotation"; exit 0' SIGINT SIGTERM
+
+  notify "Starting wallpaper rotation every ${timer}s (Ctrl+C to stop)"
+
+  while true; do
+    set_random_wallpapers "$wallpaper_dir" "$depth_arg"
+    sleep "$timer"
+  done
+}
+
+set_monitor_wallpaper() {
+  local monitor="$1"
+  local input="${2:-}"
+
+  local -a all_monitors
+  read -ra all_monitors <<<"$(get_monitors)"
+
+  local monitor_found=0
+  for mon in "${all_monitors[@]}"; do
+    if [[ "$mon" == "$monitor" ]]; then
+      monitor_found=1
+      break
+    fi
+  done
+
+  if [[ $monitor_found -eq 0 ]]; then
+    notify "Error: Monitor '$monitor' not found. Available: ${all_monitors[*]}"
+    exit 1
+  fi
+
+  ensure_swww_daemon
+
+  local wallpaper
+  if [[ "$input" == "--rand" || "$input" == "--random" ]]; then
+    local wallpaper_dir="${3:-$DEFAULT_DIR}"
+    wallpaper=$(pick_random_image "$wallpaper_dir" "$DEPTH_ARG")
+  else
+    wallpaper="$input"
+  fi
+
+  apply_wallpaper "$monitor" "$wallpaper" "$MODE"
+  save_state "$monitor" "$wallpaper"
+}
+
+list_monitors() {
+  local -a monitors
+  read -ra monitors <<<"$(get_monitors)"
+
+  echo "Available monitors:"
+  for monitor in "${monitors[@]}"; do
+    echo "  $monitor"
+  done
+}
+
+list_wallpapers() {
+  if [[ ! -f "$STATE_FILE" ]]; then
+    echo "No saved wallpapers yet"
+    return
+  fi
+
+  declare -A state
+  load_state state
+
+  echo "Current wallpapers:"
+  for monitor in "${!state[@]}"; do
+    echo "  $monitor -> ${state[$monitor]}"
+  done | sort
+}
+
+reload_last() {
+  if [[ ! -f "$STATE_FILE" ]]; then
+    notify "No saved state found. Initializing with random wallpapers"
+    set_random_wallpapers "$DEFAULT_DIR" ""
+    return
+  fi
+
+  declare -A state
+  load_state state
+
+  if [[ ${#state[@]} -eq 0 ]]; then
+    notify "Error: No valid saved wallpapers found"
+    exit 1
+  fi
+
+  ensure_swww_daemon
+
+  for monitor in "${!state[@]}"; do
+    local wallpaper="${state[$monitor]}"
+    if [[ -f "$wallpaper" ]]; then
+      apply_wallpaper "$monitor" "$wallpaper" "$MODE"
+    else
+      notify "Warning: File not found for $monitor: $wallpaper"
+    fi
+  done
+
+  notify "Reloaded wallpapers for ${#state[@]} monitor(s)"
+}
+
+apply_wallpaper() {
+  local monitor="$1"
+  local wall="$2"
+  local mode="${3:-$DEFAULT_MODE}"
+
+  if [[ -f "$wall" ]]; then
+    swww img "$wall" --outputs "$monitor" --resize "$mode" --transition-type none 2> >(grep -v "WARN" >&2)
+    notify "$monitor -> $(basename "$wall")"
+  else
+    notify "Error: File not found for $monitor: $wall"
+  fi
+}
+
+status_check() {
+  if [[ ! -f "$STATE_FILE" ]]; then
+    echo "No saved wallpapers yet"
+    return
+  fi
+
+  declare -A state
+  load_state state
+
+  echo "Wallpaper Status:"
+  for monitor in "${!state[@]}"; do
+    local wall="${state[$monitor]}"
+    if pgrep -x swww-daemon >/dev/null; then
+      echo "  $monitor (swww-daemon running) -> $wall"
+    else
+      echo "  $monitor (swww-daemon not running - last saved: $wall)"
+    fi
+  done | sort
+}
+
+parse_arguments() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --mode)
+      shift
+      MODE="${1:-$DEFAULT_MODE}"
+      shift
+      ;;
+    --depth)
+      shift
+      DEPTH_ARG="-maxdepth ${1:-1}"
+      shift
+      ;;
+    --timer)
+      shift
+      TIMER="${1:-300}"
+      shift
+      ;;
+    *)
+      ARGS+=("$1")
+      shift
+      ;;
+    esac
+  done
+}
+
+# --- main logic ---
+
+MODE="$DEFAULT_MODE"
+DEPTH_ARG=""
+TIMER=""
+ARGS=()
+
+parse_arguments "$@"
+set -- "${ARGS[@]+"${ARGS[@]}"}"
+
+case "${1:-}" in
+-h | --help)
+  show_help
+  exit 0
+  ;;
+
+--list)
+  list_wallpapers
+  ;;
+
+--list-monitors)
+  list_monitors
+  ;;
+
+--status)
+  status_check
+  ;;
+
+--rand | --random)
+  shift
+  if [[ -n "$TIMER" ]]; then
+    random_wallpaper_loop "${1:-$DEFAULT_DIR}" "$DEPTH_ARG" "$TIMER"
+  else
+    set_random_wallpapers "${1:-$DEFAULT_DIR}" "$DEPTH_ARG"
+  fi
+  ;;
+
+--monitor)
+  shift
+  if [[ -z "${1:-}" ]]; then
+    notify "Error: --monitor requires a monitor name"
+    exit 1
+  fi
+  monitor_name="$1"
+  shift
+  if [[ -z "${1:-}" ]]; then
+    notify "Error: --monitor requires a wallpaper path or --rand"
+    exit 1
+  fi
+  set_monitor_wallpaper "$monitor_name" "$1" "${2:-}"
+  ;;
+
+"")
+  reload_last
+  ;;
+
+*)
+  notify "Error: Invalid usage. Try --help"
+  exit 1
+  ;;
+esac

@@ -19,8 +19,8 @@ alias projects='cd ~/Developer/Projects'      # Projects directory
 alias goproj='cd ~/Developer/Projects/golang' # Go projects
 alias vueproj='cd ~/Developer/Projects/vue'   # Vue projects
 alias reactproj='cd ~/Developer/Projects/react' # React projects
-alias symlnkproj='cd ~/Developer/projects/symlinkit/' # Symlinkit project
-alias symlnkwikiproj='cd ~/Developer/projects/symlinkit.wiki/' # Symlinkit wiki project
+alias symlnkproj='cd ~/Developer/projects/Symlinkit/symlinkit/' # Symlinkit project
+alias symlnkwikiproj='cd ~/Developer/projects/Symlinkit/symlinkit.wiki/' # Symlinkit wiki project
 # Editor and Configuration
 alias vim='nvim'                             # Use Neovim as vim
 alias v='nvim'                               # Short alias for Neovim
