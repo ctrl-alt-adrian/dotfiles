@@ -42,9 +42,13 @@ return {
     },
     setup = {
       gopls = function(_, opts)
-        -- workaround for gopls not supporting semanticTokensProvider
-        -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-        LazyVim.lsp.on_attach(function(client, _)
+        -- Override on_attach to compose with LazyVim's default and add the semantic tokens workaround
+        opts.on_attach = function(client, bufnr)
+          -- Call LazyVim's default on_attach first (using updated Snacks API)
+          require("snacks.util.lsp").on_attach(client, bufnr)
+
+          -- Workaround for gopls not supporting semanticTokensProvider
+          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
           if not client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens
             client.server_capabilities.semanticTokensProvider = {
@@ -56,8 +60,7 @@ return {
               range = true,
             }
           end
-        end, "gopls")
-        -- end workaround
+        end
       end,
     },
   },
