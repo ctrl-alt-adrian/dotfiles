@@ -104,6 +104,11 @@ save_state() {
   local monitor="$1"
   local wallpaper="$2"
 
+  # Convert to absolute path if it's a valid file
+  if [[ -f "$wallpaper" ]]; then
+    wallpaper=$(readlink -f "$wallpaper")
+  fi
+
   declare -A state
 
   if [[ -f "$STATE_FILE" ]]; then
