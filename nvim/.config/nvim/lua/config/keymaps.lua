@@ -22,6 +22,7 @@ vim.keymap.set({ "i", "n" }, "<leader>ai", function()
   end
 end, { desc = "Toggle AI Suggestions" })
 
+-- toggler lsp inline completions
 vim.keymap.set("i", "<C-y>", function()
   if vim.lsp.inline_completion.get() then
     return ""
@@ -30,6 +31,7 @@ vim.keymap.set("i", "<C-y>", function()
   end
 end, { expr = true, desc = "Accept AI Suggestion" })
 
+-- toggle sidekick auto suggestions
 vim.keymap.set({ "i", "n" }, "<leader>as", function()
   local ok = pcall(require, "sidekick")
   if not ok then
@@ -93,17 +95,8 @@ vim.keymap.set("n", "<space>rf", "<cmd>IronFocus<cr>", { desc = "REPL: Focus" })
 vim.keymap.set("n", "<space>rh", "<cmd>IronHide<cr>", { desc = "REPL: Hide" })
 
 -- leap.lua: leap
-vim.keymap.set({ "n", "x", "o" }, "s", function()
-  require("leap").leap({ target_windows = { vim.api.nvim_get_current_win() } })
-end, { desc = "Leap Forward to" })
-vim.keymap.set({ "n", "x", "o" }, "S", function()
-  require("leap").leap({ backward = true, target_windows = { vim.api.nvim_get_current_win() } })
-end, { desc = "Leap Backward to" })
-vim.keymap.set({ "n", "x", "o" }, "gs", function()
-  require("leap").leap({ target_windows = vim.tbl_filter(function(win)
-    return vim.api.nvim_win_get_config(win).focusable
-  end, vim.api.nvim_tabpage_list_wins(0)) })
-end, { desc = "Leap from Windows" })
+vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)", { desc = "Leap Forward to" })
+vim.keymap.set("n", "S", "<Plug>(leap-from-window)", { desc = "Leap from Windows" })
 
 -- loverunner.lua: love2d
 vim.keymap.set("n", "<leader>lv", "<cmd>LoveRun<cr>", { desc = "Run Love2D" })
@@ -129,11 +122,31 @@ end, { desc = "Restart Hub" })
 
 -- neovim-tips.lua: neovim tips
 vim.keymap.set("n", "<leader>nto", ":NeovimTips<CR>", { desc = "Neovim tips", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>nte", ":NeovimTipsEdit<CR>", { desc = "Edit your Neovim tips", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>nta", ":NeovimTipsAdd<CR>", { desc = "Add your Neovim tip", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>nth", ":help neovim-tips<CR>", { desc = "Neovim tips help", noremap = true, silent = true })
+vim.keymap.set(
+  "n",
+  "<leader>nte",
+  ":NeovimTipsEdit<CR>",
+  { desc = "Edit your Neovim tips", noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
+  "<leader>nta",
+  ":NeovimTipsAdd<CR>",
+  { desc = "Add your Neovim tip", noremap = true, silent = true }
+)
+vim.keymap.set(
+  "n",
+  "<leader>nth",
+  ":help neovim-tips<CR>",
+  { desc = "Neovim tips help", noremap = true, silent = true }
+)
 vim.keymap.set("n", "<leader>ntr", ":NeovimTipsRandom<CR>", { desc = "Show random tip", noremap = true, silent = true })
-vim.keymap.set("n", "<leader>ntp", ":NeovimTipsPdf<CR>", { desc = "Open Neovim tips PDF", noremap = true, silent = true })
+vim.keymap.set(
+  "n",
+  "<leader>ntp",
+  ":NeovimTipsPdf<CR>",
+  { desc = "Open Neovim tips PDF", noremap = true, silent = true }
+)
 
 -- snacks-gh.lua: github
 vim.keymap.set("n", "<leader>gi", function()
