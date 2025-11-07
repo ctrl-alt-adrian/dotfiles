@@ -4,12 +4,6 @@ return {
   init = function()
     vim.opt.splitright = true
   end,
-  keys = {
-    { "<leader>aa", "<cmd>ClaudeCode<CR>", desc = "Claude: Toggle" },
-    { "<leader>aC", "<cmd>ClaudeCodeContinue<CR>", desc = "Claude: Continue" },
-    { "<leader>cr", "<cmd>ClaudeCodeResume<CR>", desc = "Claude: Resume" },
-    { "<leader>aV", "<cmd>ClaudeCodeVerbose<CR>", desc = "Claude: Verbose" },
-  },
   opts = {
     window = {
       position = "vertical",

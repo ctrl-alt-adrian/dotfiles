@@ -37,11 +37,5 @@ return {
     config = function(_, opts)
       require("iron.core").setup(opts)
     end,
-    keys = {
-      { "<space>rs", "<cmd>IronRepl<cr>", desc = "REPL: Open" },
-      { "<space>rr", "<cmd>IronRestart<cr>", desc = "REPL: Restart" },
-      { "<space>rf", "<cmd>IronFocus<cr>", desc = "REPL: Focus" },
-      { "<space>rh", "<cmd>IronHide<cr>", desc = "REPL: Hide" },
-    },
   },
 }

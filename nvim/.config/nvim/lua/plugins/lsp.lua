@@ -287,17 +287,6 @@ return {
         cssls = {},
       },
     },
-    keys = {
-      -- Toggle inlay hints for current buffer
-      {
-        "<leader>ih",
-        function()
-          local bufnr = vim.api.nvim_get_current_buf()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
-        end,
-        desc = "Toggle Inlay Hints",
-      },
-    },
   },
   -- LSP autocmd configurations
   {
