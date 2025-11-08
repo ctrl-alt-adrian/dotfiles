@@ -1,6 +1,6 @@
 return {
   {
-    "anthropics/sidekick.nvim",
+    "folke/sidekick.nvim",
     opts = {
       auto_suggestion = false,
     },

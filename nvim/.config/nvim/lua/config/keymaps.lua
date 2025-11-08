@@ -63,20 +63,6 @@ end, { desc = "Find Plugin File" })
 vim.keymap.set("n", "<leader>co", "TypescriptOrganizeImports", { desc = "Organize Imports" })
 vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File" })
 
--- flit.lua: flit
-vim.keymap.set({ "n", "x", "o" }, "f", function()
-  require("flit").f()
-end, { desc = "Flit f" })
-vim.keymap.set({ "n", "x", "o" }, "F", function()
-  require("flit").F()
-end, { desc = "Flit F" })
-vim.keymap.set({ "n", "x", "o" }, "t", function()
-  require("flit").t()
-end, { desc = "Flit t" })
-vim.keymap.set({ "n", "x", "o" }, "T", function()
-  require("flit").T()
-end, { desc = "Flit T" })
-
 -- grug-far.lua: grug-far
 vim.keymap.set({ "n", "v" }, "<leader>sr", function()
   local grug = require("grug-far")
