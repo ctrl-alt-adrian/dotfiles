@@ -7,6 +7,7 @@ wk.add({
   { "<leader>o", group = "+opencode" },
   { "<leader>i", group = "+lsp inlay" },
   { "<leader>m", group = "+mcp" },
+  { "<leader>r", group = "+repl" },
 })
 
 -- ai.lua: copilot
