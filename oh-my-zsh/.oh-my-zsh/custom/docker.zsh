@@ -1,10 +1,11 @@
 # -----------------------------
 # 🐳 OS-specific Docker Wrappers
 # -----------------------------
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  alias docker='docker.exe'
-  alias docker-compose='docker-compose.exe'
-fi
+# WSL Docker
+# if [[ "$OSTYPE" == "linux-gnu" ]]; then
+#   alias docker='docker.exe'
+#   alias docker-compose='docker-compose.exe'
+# fi
 
 # -----------------------------
 # 🐳 Docker Aliases
