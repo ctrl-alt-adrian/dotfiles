@@ -158,6 +158,15 @@ return {
 
         -- TypeScript/JavaScript (typescript-language-server)
         ts_ls = {
+          root_dir = function(fname)
+            local util = require("lspconfig.util")
+            -- Find the nearest tsconfig.json walking up from the file.
+            -- In monorepos this roots at the subproject (e.g. apps/mobile/)
+            -- rather than the repo root, so the right tsconfig is used.
+            return util.root_pattern("tsconfig.json", "jsconfig.json")(fname)
+              or util.root_pattern("package.json", ".git")(fname)
+          end,
+
           settings = {
             typescript = {
               tsserver = {
